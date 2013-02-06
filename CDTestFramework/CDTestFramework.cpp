@@ -171,6 +171,7 @@ static void IdleCallback()
 static void Terminate()
 {
 	ReleaseTerrain();
+	ReleaseSurface();
 
 	for(int i=0;i<MAX_NB_TESTS;i++)
 	{
@@ -242,6 +243,8 @@ int main(int argc, char** argv)
 	gFnt.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	CreateTerrain();
+
+	CreateSurface();
 
 	// Create main tweak bar
 	{

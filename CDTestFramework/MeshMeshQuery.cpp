@@ -64,7 +64,9 @@ void MeshMeshQuery::Init()
 void MeshMeshQuery::PerformTest()
 {
 	RenderTerrain();
-	const Model *TM = GetTerrainModel();
+	SRenderSurace();
+	const Model *TM2 = GetTerrainModel();
+	const Model *TM = GetSurfaceModel();
 
 	Opcode::AABBTreeCollider collider;
 	collider.SetFirstContact(false);
@@ -72,18 +74,22 @@ void MeshMeshQuery::PerformTest()
 
 	Opcode::BVTCache cache;
 	cache.Model0 = &mPlane;
+	//cache.Model1 = TM2;
 	cache.Model1 = TM;
 
+	//Opcode::BVTCache cache2;
+	//cache2.mo
+
 	Matrix4x4 matplane;
-	//matplane.Set(
-	//	1.0,0.0,0.0,0.0,
-	//	0.0,1.0,0.0,0.0,
-	//	0.0,0.0,1.0,0.0,
-	//	0.0,0.0,mZ,1.0
-	//	);
-	matplane.RotZ(mGamma);
-	matplane.RotX(mAlpha);
-	matplane.RotY(mBeta);
+	matplane.Set(
+		1.0,0.0,0.0,0.0,
+		0.0,1.0,0.0,0.0,
+		0.0,0.0,1.0,0.0,
+		0.0,0.0,mZ,1.0
+		);
+	//matplane.RotZ(mGamma);
+	//matplane.RotX(mAlpha);
+	//matplane.RotY(mBeta);
 
 
 	assert(collider.ValidateSettings()==0);
@@ -97,15 +103,22 @@ void MeshMeshQuery::PerformTest()
 			//udword NbTris = collider.GetNbTouchedPrimitives();
 			//const udword* Indices = collider.GetTouchedPrimitives();
 			size_t *indexes = new size_t[collider.GetNbPairs()];
+			size_t *indexes2 = new size_t[collider.GetNbPairs()];
 			const Pair *opcpairs = collider.GetPairs();
 			for (size_t i=0; i<collider.GetNbPairs(); i++)
 			{
-				indexes[i]  = opcpairs[i].id1;
+				//indexes[i]  = opcpairs[i].id0;
+				indexes2[i] = opcpairs[i].id1;
 				//indexes[i+1] = opcpairs[i].id1+1;
 				//indexes[i+2] = opcpairs[i].id1+2;
 			}
 
-			RenderTerrainTriangles(collider.GetNbPairs(), indexes);
+			//RenderTerrainTriangles(collider.GetNbPairs(), indexes2);
+			RenderSurfaceTriangles(GetSurface(),collider.GetNbPairs(),indexes2);
+			delete [] indexes;
+			indexes = NULL;
+			delete [] indexes2;
+			indexes2 = NULL;
 		}
 	}
 

@@ -1,5 +1,10 @@
 #include "stdafx.h"
 #include "Terrain.h"
+#include <stdlib.h>
+#include <assert.h>
+
+
+#define BufferSize  25
 
 inline float NxAngle(const Point& v0, const Point& v1)
 	{
@@ -412,7 +417,7 @@ void CreateTerrain()
 {
 	/////////////
 	#define TERRAIN_SIZE	64
-	#define TERRAIN_CHAOS	30.0f
+	#define TERRAIN_CHAOS	0.0f
 
 	#define TERRAIN_OFFSET	-10.0f
 	#define TERRAIN_WIDTH	2.0f
@@ -454,3 +459,333 @@ void RenderTerrainTriangles(udword nbTriangles, const udword* indices)
 	if(gTerrainData)
 		renderTerrainTriangles(*gTerrainData, nbTriangles, indices);
 }
+
+
+SurfaceImporter::SurfaceImporter()
+{
+}
+
+
+SurfaceImporter::~SurfaceImporter()
+{
+	DELETEARRAY(normals);
+	DELETEARRAY(faces);
+	DELETEARRAY(colors);
+	DELETEARRAY(verts);
+}
+
+
+void SurfaceImporter::ImportVertexes(char *filename)
+{
+	FILE *rfp;
+	if ((rfp=fopen(filename,"r"))==NULL)
+	{
+		assert(true);
+	}
+
+	char buffer[BufferSize];
+
+
+	fscanf(rfp,"%s %i %i\n",buffer, &numrow, &numcolumn);
+	assert(numrow);
+	assert(numcolumn);
+
+	nbVerts = numrow*numcolumn;
+	nbFaces = (numrow-1)*(numcolumn-1)*2;
+
+	verts = new Point[nbVerts];
+	
+	// Intialize the vertices data
+	int vIndex = 0;
+	double x, y, z;
+	// assert the vIndex>nvVerts
+	while (!feof(rfp))
+	{
+		fscanf(rfp, "%lf %lf %lf\n", &x, &y, &z);
+		verts[vIndex].x = x;
+		verts[vIndex].y = y;
+		verts[vIndex].z = z;
+	}
+
+	fclose(rfp);
+
+}
+
+
+void SurfaceImporter::InitializeColors()
+{
+	colors = new Point[nbVerts];
+	for (int i=0; i<numcolumn; i++)
+	{
+		for (int j=0; j<numrow; j++)
+		{
+			colors[i*numcolumn+j] = Point(0.5f, 0.4f, 0.2f);
+		}
+	}
+}
+
+void SurfaceImporter::InitialzieFaces()
+{
+	faces = new udword[nbFaces*3];
+	udword k = 0;
+	for (int j=0; j<numcolumn-1; j++)
+	{
+		for (int i=0; i<numrow-1; i++)
+		{
+			faces[k++] = i   + j*numrow;
+			faces[k++] = i   + (j+1)*numrow;
+			faces[k++] = i+1 + (j+1)*numrow;
+
+			faces[k++] = i   + j*numrow;
+			faces[k++] = i+1 + (j+1)*numrow;
+			faces[k++] = i+1 + j*numrow;
+		}
+	}
+}
+
+
+void SurfaceImporter::BuildVertexNormals()
+{
+	normals = new Point[nbVerts];
+	buildSmoothNormals(nbFaces, nbVerts, verts, faces, NULL, normals, true);
+}
+
+void SurfaceImporter::InitializeFromFile(char *filename)
+{
+	ImportVertexes(filename);
+	InitializeColors();
+	InitialzieFaces();
+	BuildVertexNormals();
+}
+
+void SurfaceImporter::InitializeFromFunction()
+{
+	numrow = 30;
+	numcolumn = 30;
+	nbVerts = numrow*numcolumn;
+	nbFaces = (numrow-1)*(numcolumn-1)*2;
+	const float xscale = 3;
+	const float yscale = 3;
+	const float zscale = -9;
+	const float xstart = -2.0*xscale;
+	const float xend = 2.0*xscale;
+	const float ystart = -2.0*yscale;
+	const float yend = 2.0*yscale;
+
+	float x = xstart;
+	const float xstep = (xend-x)/(numrow-1);
+	float y = -2.0;
+	const float ystep = (yend-y)/(numcolumn-1);
+	verts = new Point[nbVerts];
+	int k=0;
+	for ( int j=0; j<numcolumn; j++ )
+	{
+		x = xstart;
+		for ( int i=0; i<numrow; i++ )
+		{
+			verts[k].x = x;
+			verts[k].y = y;
+			verts[k].z = x*x+y*y + zscale;
+			x+=xstep;
+			k++;
+		}
+		y+=ystep;
+	}
+
+	InitializeColors();
+	InitialzieFaces();
+	BuildVertexNormals();
+
+}
+
+
+static SurfaceImporter* gSurface = NULL;
+static Model* gSurfaceModel = NULL;
+static MeshInterface gSurfaceInterface;
+
+
+void CreateSurface()
+{
+	gSurface = new SurfaceImporter;
+	//char* filename = "D:\\data\\screwsurface.xyz";
+	//gSurface->InitializeFromFile(filename);
+	gSurface->InitializeFromFunction();
+
+	// Build Opcode model
+	gSurfaceInterface.SetNbTriangles(gSurface->NBFaces());
+	gSurfaceInterface.SetNbVertices(gSurface->NBVerts());
+	gSurfaceInterface.SetPointers(
+		(const IndexedTriangle *) gSurface->Faces(),
+		gSurface->Verts()
+		);
+
+	OPCODECREATE Create;
+	Create.mIMesh			= &gSurfaceInterface;
+	Create.mSettings.mLimit	= 1;
+	Create.mSettings.mRules	= SPLIT_SPLATTER_POINTS|SPLIT_GEOM_CENTER;
+	Create.mNoLeaf			= true;
+	Create.mQuantized		= true;
+	Create.mKeepOriginal	= false;
+	Create.mCanRemap		= false;
+
+	gSurfaceModel = new Model;
+	if (!gSurfaceModel->Build(Create))
+	{
+		
+	}
+
+}
+
+
+const Model* GetSurfaceModel()
+{
+	return gSurfaceModel;
+}
+
+SurfaceImporter* GetSurface()
+{
+	return gSurface;
+}
+
+void ReleaseSurface()
+{
+	DELETESINGLE(gSurface);
+	DELETESINGLE(gSurfaceModel);
+}
+
+
+
+void SRenderSurace()
+{
+	RenderSurface(gSurface,true);
+}
+
+void RenderCollidePatch(udword nbTri_, udword *indices_)
+{
+	RenderSurfaceTriangles(gSurface, nbTri_, indices_);
+}
+
+
+static void _RenderSurface(udword *faces_, Point *colors_, Point *normals_, Point *verts_, udword nbFaces_, bool addWireframe)
+{
+	float* pVertList = new float[nbFaces_*3*3];
+	float* pNormList = new float[nbFaces_*3*3];
+	float* pColorList = new float[nbFaces_*4*3];
+
+	const udword* faces = faces_;
+	const Point* colors = colors_;
+	const Point* normals = normals_;
+	const Point* verts = verts_;
+
+	int vertIndex = 0;
+	int normIndex = 0;
+	int colorIndex = 0;
+	for(int i=0;i<(int)nbFaces_;i++)
+	{
+		for(int j=0;j<3;j++)
+		{
+			pVertList[vertIndex++] = verts[faces[i*3+j]].x;
+			pVertList[vertIndex++] = verts[faces[i*3+j]].y;
+			pVertList[vertIndex++] = verts[faces[i*3+j]].z;
+
+			pNormList[normIndex++] = normals[faces[i*3+j]].x;
+			pNormList[normIndex++] = normals[faces[i*3+j]].y;
+			pNormList[normIndex++] = normals[faces[i*3+j]].z;
+
+			pColorList[colorIndex++] = colors[faces[i*3+j]].x;
+			pColorList[colorIndex++] = colors[faces[i*3+j]].y;
+			pColorList[colorIndex++] = colors[faces[i*3+j]].z;
+			pColorList[colorIndex++] = 1.0f;
+		}
+	}
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3,GL_FLOAT, 0, pVertList);
+    glEnableClientState(GL_NORMAL_ARRAY);
+	glNormalPointer(GL_FLOAT, 0, pNormList);
+    glColorPointer(4,GL_FLOAT, 0, pColorList);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glDrawArrays(GL_TRIANGLES, 0, nbFaces_*3);
+
+	if(addWireframe)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		glVertexPointer(3,GL_FLOAT, 0, pVertList);
+		glNormalPointer(GL_FLOAT, 0, pNormList);
+
+		glDisableClientState(GL_COLOR_ARRAY);
+
+		glLineWidth(2.0f);
+
+		glColor4f(0.2f, 0.2f, 0.6f, 1.0f);
+		glDrawArrays(GL_TRIANGLES, 0, nbFaces_*3);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	
+	}
+
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+
+	delete[] pVertList;
+	delete[] pNormList;
+	delete[] pColorList;
+}
+
+
+void RenderSurface(SurfaceImporter *surface, bool addWireframe)
+{
+	_RenderSurface(surface->Faces(), surface->Colors(), surface->Normals(), surface->Verts(), surface->NBFaces(), addWireframe);
+}
+
+
+static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *verts_, udword nbTri_, udword *indices_)
+{
+	int nbTriangles = nbTri_;
+	udword * indices = indices_;
+
+	float* pVertList = new float[nbTriangles*3*3];
+	float* pNormList = new float[nbTriangles*3*3];
+
+	const udword* faces = faces_;
+	const Point* normals = normals_;
+	const Point* verts = verts_;
+
+	int vertIndex = 0;
+	int normIndex = 0;
+	for(int i=0;i<(int)nbTriangles;i++)
+	{
+		udword index = *indices++;
+
+		for(int j=0;j<3;j++)
+		{
+			pVertList[vertIndex++] = verts[faces[index*3+j]].x;
+			pVertList[vertIndex++] = verts[faces[index*3+j]].y;
+			pVertList[vertIndex++] = verts[faces[index*3+j]].z;
+
+			pNormList[normIndex++] = normals[faces[index*3+j]].x;
+			pNormList[normIndex++] = normals[faces[index*3+j]].y;
+			pNormList[normIndex++] = normals[faces[index*3+j]].z;
+		}
+	}
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3,GL_FLOAT, 0, pVertList);
+    glEnableClientState(GL_NORMAL_ARRAY);
+	glNormalPointer(GL_FLOAT, 0, pNormList);
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	glDrawArrays(GL_TRIANGLES, 0, nbTriangles*3);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+	delete[] pVertList;
+	delete[] pNormList;
+}
+
+
+void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *indices_)
+{
+	_RenderSurfaceTriangles(surface->Faces(), surface->Normals(), surface->Normals(), nbTri_, indices_);
+}
+
