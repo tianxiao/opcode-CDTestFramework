@@ -57,6 +57,9 @@
     <ClCompile Include="PlaneMeshQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MeshMeshQuery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BipartiteBoxPruning.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlaneMeshQuery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshMeshQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

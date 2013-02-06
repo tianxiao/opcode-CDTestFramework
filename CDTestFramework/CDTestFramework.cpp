@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "GLFontRenderer.h"
 #include "PlaneMeshQuery.h"
+#include "MeshMeshQuery.h"
 
 #define WINDOW_WIDTH	1024
 #define WINDOW_HEIGHT	768
@@ -28,6 +29,7 @@ enum TestIndex
 	TEST_COMPLETE_BOX_PRUNING,
 	TEST_BIPARTITE_BOX_PRUNING,
 	TEST_PLANE_MESH_QUERY,
+	TEST_MESH_MESH_QUERY,
 
 	MAX_NB_TESTS
 };
@@ -251,6 +253,7 @@ int main(int argc, char** argv)
 			{TEST_COMPLETE_BOX_PRUNING, "Complete box pruning"},
 			{TEST_BIPARTITE_BOX_PRUNING, "Bipartite box pruning"},
 			{TEST_PLANE_MESH_QUERY, "Planes-Mesh query"},
+			{TEST_MESH_MESH_QUERY, "Mesh-Mesh query"},
 		};
 		TwType testType = TwDefineEnum("CollisionTest", testEV, MAX_NB_TESTS);
 		TwAddVarRW(gMainBar, "CollisionTests", testType, &gSelectedTest, "");
@@ -264,6 +267,7 @@ int main(int argc, char** argv)
 	gCollisionTests[3]	= new CompleteBoxPruningTest;
 	gCollisionTests[4]	= new BipartiteBoxPruningTest;
 	gCollisionTests[5]  = new PlaneMeshQuery;
+	gCollisionTests[6]  = new MeshMeshQuery;
 	for(int i=0;i<MAX_NB_TESTS;i++)
 		gCollisionTests[i]->Init();
 	gCollisionTests[gTest]->Select();
