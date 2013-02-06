@@ -319,10 +319,10 @@ void DrawPlane(Plane* plane)
 
 	glPushMatrix();
 	glDisable(GL_LIGHTING);
-	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 	//pose.t.y -= 0.1f;
 	SetupGLMatrix(pose);
-	glScalef(1024,0,1024);
+	glScalef(4,0,4);
 	RenderPlane();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_LIGHTING);
