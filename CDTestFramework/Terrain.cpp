@@ -505,6 +505,7 @@ void SurfaceImporter::ImportVertexes(char *filename)
 		verts[vIndex].x = x;
 		verts[vIndex].y = y;
 		verts[vIndex].z = z;
+		vIndex++;
 	}
 
 	fclose(rfp);
@@ -533,12 +534,13 @@ void SurfaceImporter::InitialzieFaces()
 		for (int i=0; i<numrow-1; i++)
 		{
 			faces[k++] = i   + j*numrow;
-			faces[k++] = i   + (j+1)*numrow;
 			faces[k++] = i+1 + (j+1)*numrow;
+			faces[k++] = i   + (j+1)*numrow;
+			
 
 			faces[k++] = i   + j*numrow;
-			faces[k++] = i+1 + (j+1)*numrow;
 			faces[k++] = i+1 + j*numrow;
+			faces[k++] = i+1 + (j+1)*numrow;
 		}
 	}
 }
@@ -607,9 +609,9 @@ static MeshInterface gSurfaceInterface;
 void CreateSurface()
 {
 	gSurface = new SurfaceImporter;
-	//char* filename = "D:\\data\\screwsurface.xyz";
-	//gSurface->InitializeFromFile(filename);
-	gSurface->InitializeFromFunction();
+	char* filename = "D:\\data\\screwsurface.xyz";
+	gSurface->InitializeFromFile(filename);
+	//gSurface->InitializeFromFunction();
 
 	// Build Opcode model
 	gSurfaceInterface.SetNbTriangles(gSurface->NBFaces());
@@ -665,12 +667,35 @@ void RenderCollidePatch(udword nbTri_, udword *indices_)
 	RenderSurfaceTriangles(gSurface, nbTri_, indices_);
 }
 
+static bool g_dataFiled = false;
+ 
+static float* gpVertList = NULL;
+static float* gpNormList = NULL;
+static float* gpColorList = NULL;
+
+
 
 static void _RenderSurface(udword *faces_, Point *colors_, Point *normals_, Point *verts_, udword nbFaces_, bool addWireframe)
 {
-	float* pVertList = new float[nbFaces_*3*3];
-	float* pNormList = new float[nbFaces_*3*3];
-	float* pColorList = new float[nbFaces_*4*3];
+	float* pVertList = gpVertList;
+	float* pNormList = gpNormList;
+	float* pColorList = gpColorList;
+
+	if (!g_dataFiled)
+	{
+		gpVertList = new float[nbFaces_*3*3];
+		gpNormList = new float[nbFaces_*3*3];
+		gpColorList = new float[nbFaces_*4*3];
+
+		pVertList = gpVertList;
+		pNormList = gpNormList;
+		pColorList = gpColorList;
+
+	} else
+	{
+		goto DRAWING;
+	}
+
 
 	const udword* faces = faces_;
 	const Point* colors = colors_;
@@ -698,6 +723,9 @@ static void _RenderSurface(udword *faces_, Point *colors_, Point *normals_, Poin
 			pColorList[colorIndex++] = 1.0f;
 		}
 	}
+	g_dataFiled = true;
+
+	DRAWING:
 
     glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3,GL_FLOAT, 0, pVertList);
@@ -728,9 +756,9 @@ static void _RenderSurface(udword *faces_, Point *colors_, Point *normals_, Poin
 	glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
 
-	delete[] pVertList;
-	delete[] pNormList;
-	delete[] pColorList;
+	//delete[] pVertList;
+	//delete[] pNormList;
+	//delete[] pColorList;
 }
 
 
