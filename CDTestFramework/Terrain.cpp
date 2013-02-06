@@ -412,7 +412,7 @@ void CreateTerrain()
 {
 	/////////////
 	#define TERRAIN_SIZE	64
-	#define TERRAIN_CHAOS	0.0f
+	#define TERRAIN_CHAOS	30.0f
 
 	#define TERRAIN_OFFSET	-10.0f
 	#define TERRAIN_WIDTH	2.0f

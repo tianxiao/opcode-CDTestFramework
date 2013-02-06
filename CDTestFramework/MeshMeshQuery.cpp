@@ -19,6 +19,10 @@ void MeshMeshQuery::Release()
 
 void MeshMeshQuery::Init()
 {
+	mAlpha = 0.0;
+	mBeta = 0.0;
+	mGamma = 0.0;
+	mZ = 0.0;
 	float z = 0.0;
 	float pscale = 100.0;
 	Point p0(-pscale,-pscale,z);
@@ -70,11 +74,23 @@ void MeshMeshQuery::PerformTest()
 	cache.Model0 = &mPlane;
 	cache.Model1 = TM;
 
+	Matrix4x4 matplane;
+	//matplane.Set(
+	//	1.0,0.0,0.0,0.0,
+	//	0.0,1.0,0.0,0.0,
+	//	0.0,0.0,1.0,0.0,
+	//	0.0,0.0,mZ,1.0
+	//	);
+	matplane.RotZ(mGamma);
+	matplane.RotX(mAlpha);
+	matplane.RotY(mBeta);
+
+
 	assert(collider.ValidateSettings()==0);
 
 	//Pair cdpair;
 
-	if (collider.Collide(cache,null,null))
+	if (collider.Collide(cache,&matplane,null))
 	{
 		if (collider.GetContactStatus())
 		{
@@ -93,6 +109,29 @@ void MeshMeshQuery::PerformTest()
 		}
 	}
 
+}
+
+void MeshMeshQuery::Select()
+{
+	{
+		mBar = TwNewBar("Z distance");
+		TwAddVarRW(mBar,"Z", TW_TYPE_FLOAT, &mZ, "min=-60.0 max=60.0 step=0.05");
+		TwAddVarRW(mBar,"rotate Z", TW_TYPE_FLOAT, &mGamma, "min=-7.0 max=7.0 step=0.05");
+		TwAddVarRW(mBar,"rotate X", TW_TYPE_FLOAT, &mAlpha, "min=-7.0 max=7.0 step=0.05");
+		TwAddVarRW(mBar,"rotate y", TW_TYPE_FLOAT, &mBeta, "min=-7.0 max=7.0 step=0.05");
+
+		// mAlpha mBeta
+		mSettings.AddToTweakBar(mBar);
+	}
+}
+
+void MeshMeshQuery::Deselect()
+{
+	if (mBar)
+	{
+		TwDeleteBar(mBar);
+		mBar = null;
+	}
 }
 
 void MeshMeshQuery::KeyboardCallback(unsigned char key, int x, int y)

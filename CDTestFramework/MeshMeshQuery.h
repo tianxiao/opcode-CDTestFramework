@@ -10,10 +10,19 @@ public:
 	virtual	void			Init();
 	virtual	void			Release();
 	virtual	void			PerformTest();
+	virtual	void			Select();
+	virtual	void			Deselect();
 	virtual	void			KeyboardCallback(unsigned char key, int x, int y);
 	virtual	void			MouseCallback(int button, int state, int x, int y);
 	virtual	void			MotionCallback(int x, int y);
 
+	TwBar *mBar;
+
+	float mZ;
+	OpcodeSettings mSettings;
+	float mGamma;
+	float mAlpha;
+	float mBeta;
 
 	Model mPlane;
 	MeshInterface mMeshI;
