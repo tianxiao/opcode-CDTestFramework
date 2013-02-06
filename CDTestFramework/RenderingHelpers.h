@@ -8,5 +8,5 @@
 	void	DrawSphere(const Sphere& sphere);
 	void	DrawOBB(const OBB& obb);
 	void	DrawCapsule(const Matrix4x4& world, const Point& p0, const Point& p1, float r);
-
+	void	DrawPlane(Plane* plane);
 #endif // RENDERINGHELPERS_H

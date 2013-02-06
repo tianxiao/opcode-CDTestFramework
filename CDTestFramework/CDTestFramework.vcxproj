@@ -97,6 +97,7 @@
     <ClCompile Include="GLFontRenderer.cpp" />
     <ClCompile Include="IceHelpers.cpp" />
     <ClCompile Include="OBBMeshQuery.cpp" />
+    <ClCompile Include="PlaneMeshQuery.cpp" />
     <ClCompile Include="RenderingHelpers.cpp" />
     <ClCompile Include="SphereMeshQuery.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -116,6 +117,7 @@
     <ClInclude Include="GLFontRenderer.h" />
     <ClInclude Include="IceHelpers.h" />
     <ClInclude Include="OBBMeshQuery.h" />
+    <ClInclude Include="PlaneMeshQuery.h" />
     <ClInclude Include="Profiling.h" />
     <ClInclude Include="RenderingHelpers.h" />
     <ClInclude Include="SphereMeshQuery.h" />

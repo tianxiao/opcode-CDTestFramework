@@ -268,6 +268,66 @@ void DrawCapsule(const Matrix4x4& world, const Point& p0, const Point& p1, float
 	glPopMatrix();
 }
 
+static float gPlaneData[]={
+    -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+    1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+	1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f
+};
+
+
+static void RenderPlane()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 2*3*sizeof(float), gPlaneData);
+    glNormalPointer(GL_FLOAT, 2*3*sizeof(float), gPlaneData+3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+}
+
+void DrawPlane(Plane* plane)
+{
+	Matrix4x4 pose;
+	pose.Set(
+		plane->n.x,0.0,0.0,plane->n.x*plane->d,
+		0.0,plane->n.y,0.0,plane->n.y*plane->d,
+		0.0,0.0,plane->n.z,plane->n.z*plane->d,
+		0.0,0.0,0.0,1.0);
+
+	float nx = plane->n.x;
+	float ny = plane->n.y;
+	float nz = plane->n.z;
+
+	float tranx = nx*plane->d;
+	float trany = ny*plane->d;
+	float tranz = nz*plane->d;
+
+	float tran[3] = {tranx,trany,tranz};
+	float rot[3][3] = {
+		nx,0.0,0.0,
+		0.0,ny,0.0,
+		0.0,0.0,nz,
+	};
+	//pose.
+	//NxMat34 pose =	plane->getGlobalPose();
+	//NxPlaneShape* planeShape = plane->isPlane();
+	//NxPlane p = planeShape->getPlane();
+	//pose.t.x += p.d;
+	//pose.t.y += p.d;
+	//pose.t.z += p.d;
+
+	glPushMatrix();
+	glDisable(GL_LIGHTING);
+	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+	//pose.t.y -= 0.1f;
+	SetupGLMatrix(pose);
+	glScalef(1024,0,1024);
+	RenderPlane();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
+}
 
 
 #ifdef TOSEE
