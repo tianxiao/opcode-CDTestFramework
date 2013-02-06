@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CDTestFramework", "CDTestFramework.vcxproj", "{0565DB39-45CC-416E-B549-BFC24F2666D1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Opcode", "Opcode\Opcode.vcxproj", "{DBE44CA3-2912-4441-8D99-AA2242688AD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DebugDoublePrecision|Win32 = DebugDoublePrecision|Win32
+		Release|Win32 = Release|Win32
+		ReleaseDoublePrecision|Win32 = ReleaseDoublePrecision|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.Debug|Win32.Build.0 = Debug|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.DebugDoublePrecision|Win32.ActiveCfg = Debug|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.DebugDoublePrecision|Win32.Build.0 = Debug|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.Release|Win32.ActiveCfg = Release|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.Release|Win32.Build.0 = Release|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.ReleaseDoublePrecision|Win32.ActiveCfg = Release|Win32
+		{0565DB39-45CC-416E-B549-BFC24F2666D1}.ReleaseDoublePrecision|Win32.Build.0 = Release|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.Debug|Win32.Build.0 = Debug|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.DebugDoublePrecision|Win32.ActiveCfg = Debug|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.DebugDoublePrecision|Win32.Build.0 = Debug|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.Release|Win32.ActiveCfg = Release|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.Release|Win32.Build.0 = Release|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.ReleaseDoublePrecision|Win32.ActiveCfg = Release|Win32
+		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.ReleaseDoublePrecision|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
