@@ -104,6 +104,7 @@ void MeshMeshQuery::PerformTest()
 			//const udword* Indices = collider.GetTouchedPrimitives();
 			size_t *indexes = new size_t[collider.GetNbPairs()];
 			size_t *indexes2 = new size_t[collider.GetNbPairs()];
+			int numcollider = collider.GetNbPairs();
 			const Pair *opcpairs = collider.GetPairs();
 			for (size_t i=0; i<collider.GetNbPairs(); i++)
 			{

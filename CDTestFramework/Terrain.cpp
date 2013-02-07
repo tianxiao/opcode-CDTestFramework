@@ -520,7 +520,7 @@ void SurfaceImporter::InitializeColors()
 	{
 		for (int j=0; j<numrow; j++)
 		{
-			colors[i*numcolumn+j] = Point(0.5f, 0.4f, 0.2f);
+			colors[i*numrow+j] = Point(0.5f, 0.4f, 0.2f);
 		}
 	}
 }
@@ -605,6 +605,13 @@ static SurfaceImporter* gSurface = NULL;
 static Model* gSurfaceModel = NULL;
 static MeshInterface gSurfaceInterface;
 
+// Display large surface optimization
+static bool g_dataFiled = false;
+ 
+static float* gpVertList = NULL;
+static float* gpNormList = NULL;
+static float* gpColorList = NULL;
+
 
 void CreateSurface()
 {
@@ -653,6 +660,10 @@ void ReleaseSurface()
 {
 	DELETESINGLE(gSurface);
 	DELETESINGLE(gSurfaceModel);
+	// Release memeory from the display function
+	DELETESINGLE(gpVertList);
+	DELETESINGLE(gpNormList);
+	DELETESINGLE(gpColorList);
 }
 
 
@@ -667,11 +678,7 @@ void RenderCollidePatch(udword nbTri_, udword *indices_)
 	RenderSurfaceTriangles(gSurface, nbTri_, indices_);
 }
 
-static bool g_dataFiled = false;
- 
-static float* gpVertList = NULL;
-static float* gpNormList = NULL;
-static float* gpColorList = NULL;
+
 
 
 
@@ -814,6 +821,6 @@ static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *vert
 
 void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *indices_)
 {
-	_RenderSurfaceTriangles(surface->Faces(), surface->Normals(), surface->Normals(), nbTri_, indices_);
+	_RenderSurfaceTriangles(surface->Faces(), surface->Normals(), surface->Verts(), nbTri_, indices_);
 }
 
