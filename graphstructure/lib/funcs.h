@@ -3,7 +3,6 @@
 /*ar rvf libmesh.a edge.o face.o edgelist.o facelist.o halfedge.o loop.o solid.o vertex.o vertexlist.o
 ranlib libmesh.a
 */
-
 void  VertexIDReset();
 void VertexConstruct( Solid ** , double , double , double  );
 void VertexDestruct( Vertex ** );
@@ -99,4 +98,7 @@ void  heapDownheap(void *);
 void  heapCheck();
 int   heapEmpty(); 
 double  Volumed( Face * f, double x, double y, double z );
+
 #endif
+
+

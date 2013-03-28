@@ -1,3 +1,6 @@
+#ifndef MESHLIB_HEADER
+#define MESHLIB_HEADER
+
 #include <stdio.h>
 #include <stdlib.h>
 #define  VERTEX    101
@@ -141,6 +144,10 @@ struct loop{
 
        int      alivel;
 };
+
+
+#endif
+
 
 
 

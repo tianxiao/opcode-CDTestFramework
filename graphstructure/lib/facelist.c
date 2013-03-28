@@ -4,6 +4,10 @@
 #include "mesh.h"
 #include "funcs.h"
 
+
+#pragma warning (disable:4996) 
+
+
 void  FaceListConstruct(Solid ** solid ,int face_number,FILE *fp)
 {
   int i;

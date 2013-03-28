@@ -1,10 +1,11 @@
+#pragma warning (disable:4996) 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "mesh.h"
 #include "funcs.h"
 
-#pragma warning (disable:4996) 
+
 
 Solid *SolidNew(){
   Solid * s;
