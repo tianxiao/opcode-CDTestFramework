@@ -4,6 +4,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CDTestFramework", "CDTestFr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Opcode", "Opcode\Opcode.vcxproj", "{DBE44CA3-2912-4441-8D99-AA2242688AD2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphstructure", "..\graphstructure\graphstructure.vcxproj", "{84CBEF67-96DD-4D87-888E-A97261082E5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -28,6 +30,14 @@ Global
 		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.Release|Win32.Build.0 = Release|Win32
 		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.ReleaseDoublePrecision|Win32.ActiveCfg = Release|Win32
 		{DBE44CA3-2912-4441-8D99-AA2242688AD2}.ReleaseDoublePrecision|Win32.Build.0 = Release|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.Debug|Win32.Build.0 = Debug|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.DebugDoublePrecision|Win32.ActiveCfg = Debug|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.DebugDoublePrecision|Win32.Build.0 = Debug|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.Release|Win32.ActiveCfg = Release|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.Release|Win32.Build.0 = Release|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.ReleaseDoublePrecision|Win32.ActiveCfg = Release|Win32
+		{84CBEF67-96DD-4D87-888E-A97261082E5C}.ReleaseDoublePrecision|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

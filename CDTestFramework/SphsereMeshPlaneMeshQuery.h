@@ -1,11 +1,11 @@
 #pragma once
 #include "collisiontest.h"
-class MeshMeshQuery :
+class SphsereMeshPlaneMeshQuery :
 	public CollisionTest
 {
 public:
-	MeshMeshQuery(void);
-	~MeshMeshQuery(void);
+	SphsereMeshPlaneMeshQuery(void);
+	~SphsereMeshPlaneMeshQuery(void);
 
 	virtual	void			Init();
 	virtual	void			Release();

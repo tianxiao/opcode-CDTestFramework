@@ -41,6 +41,8 @@
 		void InitializeFromFile(char *filename);
 		void InitializeFromFunction();
 
+		
+
 	public:
 		Point  * Verts()	{ return verts; }
 		Point  * Colors()	{ return colors; }

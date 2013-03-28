@@ -40,6 +40,7 @@ static float computeAngle(const Point* verts, const udword* refs, udword vref)
 
 	return NxAngle(edge0, edge1);
 }
+
 static bool buildSmoothNormals(
 	udword nbTris, udword nbVerts,
 	const Point* verts,
@@ -616,7 +617,7 @@ static float* gpColorList = NULL;
 void CreateSurface()
 {
 	gSurface = new SurfaceImporter;
-	char* filename = "D:\\data\\screwsurface.xyz";
+	char* filename = "D:\\data\\screwsurface200.xyz";
 	gSurface->InitializeFromFile(filename);
 	//gSurface->InitializeFromFunction();
 

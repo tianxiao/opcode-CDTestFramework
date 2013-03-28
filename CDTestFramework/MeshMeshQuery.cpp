@@ -19,6 +19,10 @@ void MeshMeshQuery::Release()
 
 void MeshMeshQuery::Init()
 {
+
+	/*float */mVB = new float[4*3];
+	/*size_t */mFB = new size_t[2*3];
+
 	mAlpha = 0.0;
 	mBeta = 0.0;
 	mGamma = 0.0;
@@ -56,6 +60,7 @@ void MeshMeshQuery::Init()
 	buildInfo.mCanRemap = false;
 
 	mPlane.Build(buildInfo);
+
 
 
 }
@@ -122,6 +127,17 @@ void MeshMeshQuery::PerformTest()
 			indexes2 = NULL;
 		}
 	}
+
+	//if (mVB!=NULL)
+	//{
+	//	delete mVB;
+	//	mVB = NULL;
+	//}
+	//if (mFB!=NULL)
+	//{
+	//	delete mFB;
+	//	mFB = NULL;
+	//}
 
 }
 

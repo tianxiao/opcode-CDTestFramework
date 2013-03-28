@@ -101,6 +101,7 @@
     <ClCompile Include="PlaneMeshQuery.cpp" />
     <ClCompile Include="RenderingHelpers.cpp" />
     <ClCompile Include="SphereMeshQuery.cpp" />
+    <ClCompile Include="SphsereMeshPlaneMeshQuery.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -123,6 +124,7 @@
     <ClInclude Include="Profiling.h" />
     <ClInclude Include="RenderingHelpers.h" />
     <ClInclude Include="SphereMeshQuery.h" />
+    <ClInclude Include="SphsereMeshPlaneMeshQuery.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
