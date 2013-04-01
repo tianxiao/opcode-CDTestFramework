@@ -85,7 +85,12 @@ void SolidConstructNoff( Solid * * solid , char *FileName){
      s = SolidNew( );
 
      VertexListConstructNoff(&s,vertex_number,fp);
+	 // according the order of vertex been read! set the vertex Id
+	 VertexListIndexConstruct(&s);
+
      FaceListConstruct(&s,face_number,fp);
+	 // also like the vertex index contructor here may need add a face index setter
+
      EdgeListConstruct(&s);
 
      *solid = s;

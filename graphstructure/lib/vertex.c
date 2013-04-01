@@ -4,11 +4,11 @@
 #include "mesh.h"
 #include "funcs.h"
  
-static Id ID = 0;
+// static Id ID = 0;
 
 void  VertexIDReset(){
 
-  ID = 0;
+  // ID = 0;
 
 }
 
@@ -20,7 +20,7 @@ Vertex *VertexNew( Vertex ** vertexs ){
   assert(v);
 
   v->vedge   = NIL;
-  v->vertexno = ID++;
+  // v->vertexno = ID++;
   v->alivev = TRUE;
 
   ADD( (*vertexs), v );

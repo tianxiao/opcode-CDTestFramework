@@ -66,6 +66,10 @@ void    VertexListDestruct( Solid ** );
 Vertex *VertexListIndex(Solid * ,int );
 void  VertexListConstructNoff(Solid **,int,FILE *);
 
+// set the vertex Id uniquely, cause the original one use the 
+// state variable Id
+void VertexListIndexConstruct(Solid **);
+
 void  EdgeListConstruct(Solid ** );
 void  EdgeListDestruct(Solid ** );
 

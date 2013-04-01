@@ -63,3 +63,24 @@ void  VertexListDestruct(Solid ** solid )
 
 }
 
+void VertexListIndexConstruct(Solid **sp)
+{
+	Vertex *vhp = (*sp)->sverts;
+	Vertex *vp = vhp;
+	int vertexId=0;
+	// If I added the following code there will be a error 
+	// error C2143:syntax error : missing ';' before 'type'
+	// The following is the reason,
+	// Visual Studio only supports C89. That means that all of your variables must be declared before anything else at the top of a function.
+	// from this link="http://stackoverflow.com/questions/15697190/error-c2143-syntax-error-missing-before-type"
+	assert(	(*sp)!=NULL );
+	assert( (*sp)->sverts!=NULL );
+
+	do 
+	{
+		vp->vertexno = vertexId;
+		vertexId++;
+		vp = vp->next;
+	}while(vp!=vhp);
+}
+

@@ -6,13 +6,13 @@
 #include "funcs.h"
 
 Face *FaceNew( Face * *faces ){
-  static Id ID = 0;
+  // static Id ID = 0;
   Face * f;
 
   NEW(f,Face);
   assert(f);
   
-  f->faceno = ID++;
+  // f->faceno = ID++;
   f->floop   = NIL;
   f->fsolid = NIL;
  

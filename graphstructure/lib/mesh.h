@@ -1,5 +1,6 @@
 #ifndef MESHLIB_HEADER
 #define MESHLIB_HEADER
+#include "../importsymble.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,7 +60,7 @@ typedef struct vertex     Vertex;
 typedef struct edge       Edge;
 typedef struct node       Node;
 
-struct node{
+struct GRAPHSTRUCTURE_API node{
 
  int    type;
  void * p;
@@ -71,7 +72,7 @@ struct node{
 
 
 
-struct solid{
+struct GRAPHSTRUCTURE_API solid{
 
    Face    *sfaces;
    Edge    *sedges;
@@ -79,7 +80,7 @@ struct solid{
    double   center[3];
 };
 
-struct face{
+struct GRAPHSTRUCTURE_API face{
   
    Id          faceno;
 
@@ -93,7 +94,8 @@ struct face{
    int       alivef;
 };
 
-struct edge{
+struct GRAPHSTRUCTURE_API edge{
+	Id        edgeno;
 
 	HalfEdge  *he1;
 	HalfEdge  *he2;
@@ -106,8 +108,7 @@ struct edge{
 
 };
 
-struct halfedge{
-
+struct GRAPHSTRUCTURE_API halfedge{
 
 	Edge     *hedge;
 	Loop     *hloop;
@@ -121,13 +122,13 @@ struct halfedge{
 };
 
 
-struct vertex{
+struct GRAPHSTRUCTURE_API vertex{
 
 	Id        vertexno;
 	HalfEdge  *vedge;
-        double    gauss_cur;
+    double    gauss_cur;
 	double    vcoord[3];
-        double    ncoord[3];
+    double    ncoord[3];
 
 	Vertex    *next;
 	Vertex    *prev;
@@ -137,7 +138,7 @@ struct vertex{
 
 
 
-struct loop{
+struct GRAPHSTRUCTURE_API loop{
   
        HalfEdge *ledges;
        Face     *lface;
