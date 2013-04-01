@@ -133,6 +133,9 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\graphstructure\graphstructure.vcxproj">
+      <Project>{84cbef67-96dd-4d87-888e-a97261082e5c}</Project>
+    </ProjectReference>
     <ProjectReference Include="Opcode\Opcode.vcxproj">
       <Project>{dbe44ca3-2912-4441-8d99-aa2242688ad2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

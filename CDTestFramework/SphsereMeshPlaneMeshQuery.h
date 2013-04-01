@@ -1,5 +1,7 @@
 #pragma once
 #include "collisiontest.h"
+class SurfaceImporter;
+
 class SphsereMeshPlaneMeshQuery :
 	public CollisionTest
 {
@@ -30,6 +32,9 @@ public:
 	//size_t mFB[2*3];
 	float *mVB;
 	size_t *mFB;
+
+	// Mesh from the surface
+	SurfaceImporter *surface;
 
 };
 

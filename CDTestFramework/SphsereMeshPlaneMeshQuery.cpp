@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "SphsereMeshPlaneMeshQuery.h"
+#include "Terrain.h"
 
 
 SphsereMeshPlaneMeshQuery::SphsereMeshPlaneMeshQuery(void)
@@ -13,10 +14,16 @@ SphsereMeshPlaneMeshQuery::~SphsereMeshPlaneMeshQuery(void)
 
 void SphsereMeshPlaneMeshQuery::Init()
 {
+	surface = new SurfaceImporter();
+	assert(surface);
+	char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\bunny_nf500.noff";
+	surface->InitializeFromOFF(filename);
 }
 
 void SphsereMeshPlaneMeshQuery::Release()
 {
+	delete surface;
+	surface = NULL;
 }
 
 void SphsereMeshPlaneMeshQuery::PerformTest()

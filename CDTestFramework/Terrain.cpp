@@ -3,8 +3,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "../graphstructure/txMesh.h"
+#include "../graphstructure/lib/mesh.h"
 
 #define BufferSize  25
+
+#pragma warning (disable:4996)
 
 inline float NxAngle(const Point& v0, const Point& v1)
 	{
@@ -464,6 +468,7 @@ void RenderTerrainTriangles(udword nbTriangles, const udword* indices)
 
 SurfaceImporter::SurfaceImporter()
 {
+	mesh = NULL;
 }
 
 
@@ -546,7 +551,6 @@ void SurfaceImporter::InitialzieFaces()
 	}
 }
 
-
 void SurfaceImporter::BuildVertexNormals()
 {
 	normals = new Point[nbVerts];
@@ -600,6 +604,46 @@ void SurfaceImporter::InitializeFromFunction()
 	BuildVertexNormals();
 
 }
+
+void SurfaceImporter::InitializeFromOFF(char *filename)
+{
+	mesh = new txMesh();
+	mesh->ConstructMeshFromFile(filename);
+	nbVerts = mesh->VertexCount();
+	nbFaces = mesh->FaceCount();
+
+	InitializeMeshVertices();
+	InitializeMeshFaces();
+
+}
+
+void SurfaceImporter::InitializeMeshVertices()
+{
+	verts = new Point[nbVerts];
+	assert(nbVerts==mesh->GetVertexList().size());
+	for (size_t i=0; i<nbVerts; i++)
+	{
+		double *p = &(mesh->GetVertexList()[i]->vcoord[0]);
+		assert(p);
+		verts[i].Set(p[0], p[1], p[2]);
+	}
+}
+
+void SurfaceImporter::InitializeMeshFaces()
+{
+	faces = new udword[nbFaces*3];
+	for (size_t i=0; i<nbFaces; i++) {
+		int a,b,c;
+		a=-1; b=-1; c=-1;
+		mesh->GetFaceVertexIdListByFId(i,a,b,c);
+
+		faces[3*i+0] = a;
+		faces[3*i+1] = b;
+		faces[3*i+2] = c;
+	}
+
+}
+
 
 
 static SurfaceImporter* gSurface = NULL;
@@ -668,7 +712,6 @@ void ReleaseSurface()
 }
 
 
-
 void SRenderSurace()
 {
 	RenderSurface(gSurface,true);
@@ -678,9 +721,6 @@ void RenderCollidePatch(udword nbTri_, udword *indices_)
 {
 	RenderSurfaceTriangles(gSurface, nbTri_, indices_);
 }
-
-
-
 
 
 static void _RenderSurface(udword *faces_, Point *colors_, Point *normals_, Point *verts_, udword nbFaces_, bool addWireframe)
@@ -824,4 +864,7 @@ void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *ind
 {
 	_RenderSurfaceTriangles(surface->Faces(), surface->Normals(), surface->Verts(), nbTri_, indices_);
 }
+
+
+
 

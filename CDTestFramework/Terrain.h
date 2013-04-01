@@ -30,6 +30,7 @@
 
 	const Model*	GetTerrainModel();
 
+	class txMesh;
 
 	class SurfaceImporter
 	{
@@ -41,7 +42,7 @@
 		void InitializeFromFile(char *filename);
 		void InitializeFromFunction();
 
-		
+		void InitializeFromOFF(char *filename);
 
 	public:
 		Point  * Verts()	{ return verts; }
@@ -57,6 +58,15 @@
 		void InitialzieFaces();
 		void BuildVertexNormals();
 
+		// TODO And this import class will be refactor
+		// let more robust! and organized
+		void InitializeMeshVertices();
+		void InitializeMeshFaces();
+		// Initialize the OFF file color
+		// I set the model to a same color
+		// And OFF will set vertex color by means
+		void InitializeOFFColors();
+
 		udword nbVerts;
 		udword nbFaces;
 		int numrow;
@@ -67,6 +77,8 @@
 		Point *normals;
 		udword*faces;
 		
+		// pointer to keep up the txMesh
+		txMesh *mesh;
 
 	};
 
