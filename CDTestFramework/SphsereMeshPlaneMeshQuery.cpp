@@ -28,6 +28,8 @@ void SphsereMeshPlaneMeshQuery::Release()
 
 void SphsereMeshPlaneMeshQuery::PerformTest()
 {
+	// Draw the Tri-Mesh
+	RenderSurface(surface);
 }
 
 void SphsereMeshPlaneMeshQuery::Select()

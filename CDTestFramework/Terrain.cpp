@@ -615,6 +615,9 @@ void SurfaceImporter::InitializeFromOFF(char *filename)
 	InitializeMeshVertices();
 	InitializeMeshFaces();
 
+	InitializeOFFColors();
+	BuildVertexNormals();
+
 }
 
 void SurfaceImporter::InitializeMeshVertices()
@@ -644,7 +647,14 @@ void SurfaceImporter::InitializeMeshFaces()
 
 }
 
-
+void SurfaceImporter::InitializeOFFColors()
+{
+	colors = new Point[nbVerts];
+	for ( int i=0; i<nbVerts; i++ )
+	{
+		colors[i] = Point(0.5f, 0.4f, 0.2f);
+	}
+}
 
 static SurfaceImporter* gSurface = NULL;
 static Model* gSurfaceModel = NULL;
