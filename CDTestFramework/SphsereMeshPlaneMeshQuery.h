@@ -6,6 +6,13 @@ class TXSurfaceDrawer;
 class TXOpcodeModelBuilder;
 class txMesh;
 
+enum SphereAppState
+{
+	WITHPATCHFINDER,
+	WITHOUTPATCHFINDER,
+	NUM_PF_STATES
+};
+
 class SphsereMeshPlaneMeshQuery :
 	public CollisionTest
 {
@@ -23,6 +30,7 @@ public:
 	virtual	void			MotionCallback(int x, int y);
 
 	TwBar *mBar;
+	int pfappset;
 
 	float mZ;
 	OpcodeSettings mSettings;
@@ -42,5 +50,7 @@ public:
 	txMesh *mesh;
 	TXSurfaceDrawer *drawer;
 	TXOpcodeModelBuilder *modelbuilder;
+
+	
 };
 

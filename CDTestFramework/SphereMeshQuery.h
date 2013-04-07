@@ -4,6 +4,8 @@
 #include "CollisionTest.h"
 #include "Profiling.h"
 
+
+
 	class SphereMeshQuery : public CollisionTest
 	{
 		public:

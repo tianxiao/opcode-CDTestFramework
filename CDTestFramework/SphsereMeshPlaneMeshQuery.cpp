@@ -31,6 +31,10 @@ void SphsereMeshPlaneMeshQuery::Init()
 
 	modelbuilder = new TXOpcodeModelBuilder(surface);
 	assert(modelbuilder);
+
+	// With Patch-Finder
+	pfappset = WITHPATCHFINDER;
+
 }
 
 void SphsereMeshPlaneMeshQuery::Release()
@@ -97,13 +101,20 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 			// RenderSurfaceTriangles(surface,collider.GetNbPairs(),indexes2);
 			RenderSurfaceTriangles(surface,collider.GetNbPairs(),indexes);
 
-			// detect the missing triangle
-			TXPatchDetector patchdetector(mesh);
-			patchdetector.InputRing(collider.GetNbPairs(), indexes);
-			patchdetector.DetectPath();
-			size_t *patchindices = patchdetector.PatchIndeces();
-			// Rnder the patch face patch
-			RenderSurfaceTriangles(surface, patchdetector.PatchCount(), patchindices);
+			if (pfappset==WITHPATCHFINDER) 
+			{
+				// detect the missing triangle
+				TXPatchDetector patchdetector(mesh);
+				patchdetector.InputRing(collider.GetNbPairs(), indexes);
+				patchdetector.DetectPath();
+				size_t *patchindices = patchdetector.PatchIndeces();
+				// Rnder the patch face patch
+				RenderSurfaceTriangles(surface, patchdetector.PatchCount(), patchindices);
+
+			} else {
+			
+			}
+
 			delete [] indexes;
 			indexes = NULL;
 			delete [] indexes2;
@@ -114,10 +125,24 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 
 void SphsereMeshPlaneMeshQuery::Select()
 {
+	{
+		mBar = TwNewBar("Patch-Finder Tests");
+		TwEnumVal testPatchFinder[NUM_PF_STATES] = {
+			{WITHPATCHFINDER, "With patch-finder"},
+			{WITHOUTPATCHFINDER, "Without patch-finder"},
+		};
+		TwType pfType = TwDefineEnum("Patch-Finder Tests", testPatchFinder, NUM_PF_STATES);
+		TwAddVarRW(mBar,"Patch-Finder Tests",pfType,&pfappset,"");
+	}
 }
 
 void SphsereMeshPlaneMeshQuery::Deselect()
 {
+	if (mBar)
+	{
+		TwDeleteBar(mBar);
+		mBar = null;
+	}
 }
 
 void SphsereMeshPlaneMeshQuery::KeyboardCallback(unsigned char key, int x, int y)
