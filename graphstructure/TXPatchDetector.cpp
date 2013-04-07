@@ -15,15 +15,23 @@ TXPatchDetector::TXPatchDetector(txMesh *mesh)
 		facestate.push_back(INITIAL);
 	}
 
-	patchcount=0;
+	patchcount1=0;
+
+	indecies1 = NULL;
+	indecies2 = NULL;
 }
 
 
 TXPatchDetector::~TXPatchDetector(void)
 {
-	if (indecies!=NULL)
+	if (indecies1!=NULL)
 	{
-		delete indecies;
+		delete indecies1;
+	}
+
+	if (indecies2!=NULL)
+	{
+		delete indecies2;
 	}
 }
 
@@ -34,6 +42,7 @@ void TXPatchDetector::InputRing(size_t nbTri, size_t *indices)
 	{
 		facestate[indices[i]] = RINGPACTH;
 	}
+	numringtri = nbTri;
 }
 
 void TXPatchDetector::DetectPath()
@@ -46,7 +55,7 @@ void TXPatchDetector::DetectPath()
 	q.push(startfaceid);
 	while (!q.empty())
 	{
-		patchcount++;
+		patchcount1++;
 		int id = q.front();
 		q.pop();
 
@@ -58,7 +67,7 @@ void TXPatchDetector::DetectPath()
 	}
 
 	// iterator the facedetectedlist find the 1
-
+	patchcount2 = mesh->FaceCount() - numringtri - patchcount1;
 }
 
 /**
@@ -111,16 +120,31 @@ std::vector<int> TXPatchDetector::DetectValidFaceAroundFace( int faceId)
 	return rst;
 }
 
-size_t *TXPatchDetector::PatchIndeces()
+size_t *TXPatchDetector::PatchIndeces1()
 {
-	indecies = new size_t[patchcount];
+	indecies1 = new size_t[patchcount1];
 	size_t counter = 0;
 	for (size_t i=0; i<facestate.size(); i++)
 	{
 		if (facestate[i]==PATCH0)
 		{
-			indecies[counter++] = i;
+			indecies1[counter++] = i;
 		}
 	}
-	return indecies;
+	assert(counter==patchcount1);
+	return indecies1;
+}
+
+size_t *TXPatchDetector::PatchIndeces2()
+{
+	indecies2 = new size_t[patchcount2];
+	size_t counter = 0;
+	for (size_t i=0; i<facestate.size(); i++)
+	{
+		if (facestate[i]==INITIAL)
+		{
+			indecies2[counter++] = i;
+		}
+	}
+	return indecies2;
 }

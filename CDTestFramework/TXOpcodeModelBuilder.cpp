@@ -2,7 +2,10 @@
 #include "TXOpcodeModelBuilder.h"
 #include "Terrain.h"
 
-
+/**
+* We need set the coherence of Opcode. 
+* because our problem domain is on the motion domain
+*/
 TXOpcodeModelBuilder::TXOpcodeModelBuilder(SurfaceImporter *surface)
 {
  	assert(surface);

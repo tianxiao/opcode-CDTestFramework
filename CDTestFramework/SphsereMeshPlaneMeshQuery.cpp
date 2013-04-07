@@ -107,9 +107,9 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 				TXPatchDetector patchdetector(mesh);
 				patchdetector.InputRing(collider.GetNbPairs(), indexes);
 				patchdetector.DetectPath();
-				size_t *patchindices = patchdetector.PatchIndeces();
+				size_t *patchindices = patchdetector.PatchIndeces1();
 				// Rnder the patch face patch
-				RenderSurfaceTriangles(surface, patchdetector.PatchCount(), patchindices);
+				RenderSurfaceTriangles(surface, patchdetector.PatchCount1(), patchindices);
 
 			} else {
 			
