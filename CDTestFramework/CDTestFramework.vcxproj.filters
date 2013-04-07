@@ -63,6 +63,12 @@
     <ClCompile Include="SphsereMeshPlaneMeshQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TXSurfaceDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TXOpcodeModelBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BipartiteBoxPruning.h">
@@ -117,6 +123,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SphsereMeshPlaneMeshQuery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TXSurfaceDrawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TXOpcodeModelBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

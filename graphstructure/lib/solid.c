@@ -54,6 +54,9 @@ void SolidConstruct( Solid * * solid , char *FileName){
       s = SolidNew( );
 
      VertexListConstruct(&s,vertex_number,fp);
+	 // according the order of vertex been read! set the vertex Id
+	 VertexListIndexConstruct(&s);
+
      FaceListConstruct(&s,face_number,fp);
      EdgeListConstruct(&s);
 

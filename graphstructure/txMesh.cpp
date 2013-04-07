@@ -8,6 +8,7 @@
 
 extern "C" void SolidConstructNoff( Solid **  , char *);
 extern "C" void SolidDestruct( Solid * * solid );
+extern "C" void SolidConstruct( Solid * * solid , char *FileName);
 
 txMesh::txMesh(void)
 {
@@ -22,9 +23,16 @@ txMesh::~txMesh(void)
 	}
 }
 
-void txMesh::ConstructMeshFromFile(char* filename)
+void txMesh::ConstructMeshFromFile(char* filename, int state)
 {
-	SolidConstructNoff(&solid,filename);
+	if (0 == state) {
+		SolidConstructNoff(&solid,filename);
+	}
+
+	if (1 == state) {
+		SolidConstruct(&solid, filename);
+	}
+	
 
 	ConstructFVEIndex();
 }
@@ -94,4 +102,46 @@ void txMesh::GetFaceVertexIdListByFId(const int faceno, int &a, int &b, int &c)
 	a = faceverticeslist[0];
 	b = faceverticeslist[1];
 	c = faceverticeslist[2];
+}
+
+void txMesh::CircleFacesFace(int faceId, int &face1, int &face2, int &face3)
+{
+	face *face0 = facelist[faceId];
+	loop *loop = face0->floop;
+	halfedge *hfhead = loop->ledges;
+	halfedge *hfcur = hfhead;
+	std::vector<halfedge*> halfedgelist;
+	halfedgelist.reserve(3);// only efficient for Tri-Mesh
+	do 
+	{
+		halfedgelist.push_back(hfcur);
+		hfcur = hfcur->next;
+	} while (hfcur!=hfhead);
+
+	assert(halfedgelist.size()==3);
+	face1 = FaceIdReverseHalfedge(halfedgelist[0]);
+	face2 = FaceIdReverseHalfedge(halfedgelist[1]);
+	face3 = FaceIdReverseHalfedge(halfedgelist[2]);
+}
+
+halfedge *txMesh::HalfedgeHalfedge(halfedge *hf)
+{
+	edge *commonedge = hf->hedge;
+	if ( commonedge->he1 == hf ) {
+		return commonedge->he2;
+	} else {
+		return commonedge->he1;
+	}
+}
+
+int txMesh::FaceIdHalfedge(halfedge *hf)
+{
+	int faceId = hf->hloop->lface->faceno;
+	return faceId;
+}
+
+int txMesh::FaceIdReverseHalfedge(halfedge *hf)
+{
+	halfedge *rhf = HalfedgeHalfedge(hf);
+	return FaceIdHalfedge(rhf);
 }

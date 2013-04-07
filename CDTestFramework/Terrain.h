@@ -51,6 +51,7 @@
 		udword * Faces()	{ return faces; }
 		udword NBVerts()	{ return nbVerts; }
 		udword NBFaces()	{ return nbFaces; }
+		txMesh *GetMesh()   { return mesh; }
 			
 	private:
 		void ImportVertexes(char *filename);

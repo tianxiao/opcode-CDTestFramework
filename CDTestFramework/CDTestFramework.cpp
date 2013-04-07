@@ -246,7 +246,7 @@ int main(int argc, char** argv)
 
 	CreateTerrain();
 
-	CreateSurface();
+	// CreateSurface();
 
 	// Create main tweak bar
 	{

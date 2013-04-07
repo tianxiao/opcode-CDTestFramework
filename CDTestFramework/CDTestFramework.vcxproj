@@ -107,6 +107,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TXOpcodeModelBuilder.cpp" />
+    <ClCompile Include="TXSurfaceDrawer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BipartiteBoxPruning.h" />
@@ -127,6 +129,8 @@
     <ClInclude Include="SphsereMeshPlaneMeshQuery.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TXOpcodeModelBuilder.h" />
+    <ClInclude Include="TXSurfaceDrawer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CDTestFramework.txt" />

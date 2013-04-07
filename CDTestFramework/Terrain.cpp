@@ -733,6 +733,10 @@ void RenderCollidePatch(udword nbTri_, udword *indices_)
 }
 
 
+
+
+
+// depreciate cause the global variables
 static void _RenderSurface(udword *faces_, Point *colors_, Point *normals_, Point *verts_, udword nbFaces_, bool addWireframe)
 {
 	float* pVertList = gpVertList;

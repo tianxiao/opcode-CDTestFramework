@@ -1,6 +1,10 @@
 #pragma once
 #include "collisiontest.h"
+
 class SurfaceImporter;
+class TXSurfaceDrawer;
+class TXOpcodeModelBuilder;
+class txMesh;
 
 class SphsereMeshPlaneMeshQuery :
 	public CollisionTest
@@ -35,6 +39,8 @@ public:
 
 	// Mesh from the surface
 	SurfaceImporter *surface;
-
+	txMesh *mesh;
+	TXSurfaceDrawer *drawer;
+	TXOpcodeModelBuilder *modelbuilder;
 };
 
