@@ -23,19 +23,28 @@ txMesh::~txMesh(void)
 	}
 }
 
-void txMesh::ConstructMeshFromFile(char* filename, int state)
+void txMesh::ConstructMeshFromFile(char* filename, FileFormat f/*=NOFF*/)
 {
-	if (0 == state) {
+	if (NOFF == f) {
 		SolidConstructNoff(&solid,filename);
 	}
 
-	if (1 == state) {
+	if (OFF == f) {
 		SolidConstruct(&solid, filename);
 	}
 	
 
 	ConstructFVEIndex();
 }
+
+
+void txMesh::ConstructMeshFromSolid(Solid *s)
+{
+	this->solid = s;
+
+	ConstructFVEIndex();
+}
+
 
 void txMesh::ConstructFVEIndex()
 {

@@ -45,7 +45,7 @@ void TXPatchDetector::InputRing(size_t nbTri, size_t *indices)
 	numringtri = nbTri;
 }
 
-void TXPatchDetector::DetectPath()
+PatchType TXPatchDetector::DetectPath()
 {
 	// Pick one that is not on the Opcode detected ring patch
 	int startfaceid = RandomFindFaceOnPatch();
@@ -68,6 +68,8 @@ void TXPatchDetector::DetectPath()
 
 	// iterator the facedetectedlist find the 1
 	patchcount2 = mesh->FaceCount() - numringtri - patchcount1;
+	// TODO!
+	return PENETRATION;
 }
 
 /**
@@ -82,7 +84,15 @@ int TXPatchDetector::RandomFindFaceOnPatch()
 		if ( facestate[i] != RINGPACTH)
 			break;
 	}
+	
+	// TODO fix the assert and return the whole match
+	// Although this case is rarely happened
 	assert(i<facestate.size());
+	// Can not find one tri that is not ring path
+	// means the whole body is contact with other body.
+	if (i == facestate.size()) {
+		return -1;
+	}
 	return i--;
 }
 

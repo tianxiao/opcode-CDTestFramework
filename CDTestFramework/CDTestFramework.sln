@@ -6,6 +6,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Opcode", "Opcode\Opcode.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphstructure", "..\graphstructure\graphstructure.vcxproj", "{84CBEF67-96DD-4D87-888E-A97261082E5C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tessellationtri", "..\tessellationtri\tessellationtri.vcxproj", "{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -38,6 +40,14 @@ Global
 		{84CBEF67-96DD-4D87-888E-A97261082E5C}.Release|Win32.Build.0 = Release|Win32
 		{84CBEF67-96DD-4D87-888E-A97261082E5C}.ReleaseDoublePrecision|Win32.ActiveCfg = Release|Win32
 		{84CBEF67-96DD-4D87-888E-A97261082E5C}.ReleaseDoublePrecision|Win32.Build.0 = Release|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.Debug|Win32.Build.0 = Debug|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.DebugDoublePrecision|Win32.ActiveCfg = Debug|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.DebugDoublePrecision|Win32.Build.0 = Debug|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.Release|Win32.ActiveCfg = Release|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.Release|Win32.Build.0 = Release|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.ReleaseDoublePrecision|Win32.ActiveCfg = Release|Win32
+		{B7459EE4-1AA4-48AF-B93A-694D5F4970F4}.ReleaseDoublePrecision|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

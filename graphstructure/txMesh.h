@@ -10,13 +10,20 @@ struct vertex;
 struct edge;
 struct halfedge;
 
+enum FileFormat
+{
+	NOFF,
+	OFF,
+};
+
 class GRAPHSTRUCTURE_API txMesh
 {
 public:
 	txMesh(void);
 	~txMesh(void);
 
-	void ConstructMeshFromFile(char* filename, int state=0);
+	void ConstructMeshFromFile(char* filename, FileFormat f=NOFF);
+
 	std::vector<face*> &GetFaceList() { return facelist; };
 	void GetFaceVertexIdListByFId(const int faceno, int &a, int &b, int &c);
 	std::vector<vertex*> &GetVertexList() { return vertexlist; };
@@ -24,6 +31,10 @@ public:
 	int FaceCount() { return facelist.size(); };
 	int VertexCount() { return vertexlist.size(); };
 	int EdgeCount() { return edgelist.size(); };
+
+
+	// 
+	void ConstructMeshFromSolid(solid *s);
 
 	// Adjacent info (traversal)
 public:

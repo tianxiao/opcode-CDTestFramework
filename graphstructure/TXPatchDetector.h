@@ -12,6 +12,12 @@ enum GRAPHSTRUCTURE_API FaceState
 	RINGPACTH,
 	INITIAL
 };
+
+enum PatchType 
+{
+	TOUCH,			// 2 parts `1 The ring patch `2 The outside patch
+	PENETRATION		// 3 parts `1 The outside patch `2 The ring patch `3 The penetration patch
+};
 /**
 * This detector must be called if their is collied occure
 * (by the Opcode collision!)
@@ -24,7 +30,7 @@ public:
 
 	void InputRing(size_t nbTri, size_t *indices);
 
-	void DetectPath();
+	PatchType DetectPath();
 
 	// to compatible with the render function
 	size_t PatchCount1() { return patchcount1; };

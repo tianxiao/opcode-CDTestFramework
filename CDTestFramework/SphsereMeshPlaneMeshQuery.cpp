@@ -21,8 +21,10 @@ void SphsereMeshPlaneMeshQuery::Init()
 	assert(surface);
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\bunny_nf500.noff";
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\tetra.off";
-	 char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\sphere3.off";
+	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\sphere3.off";
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\cube.off";
+	 char *filename = "E:\\motionsolve\\ProjectTime\\20130408\\trimesh.off";
+	 
 	surface->InitializeFromOFF(filename);
 	mesh = surface->GetMesh();
 
@@ -49,6 +51,17 @@ void SphsereMeshPlaneMeshQuery::Release()
 
 void SphsereMeshPlaneMeshQuery::PerformTest()
 {
+
+	/**
+	* The folowing code is a test:
+	* You cannot do this in stl event you allocate the memeory first.
+	*/
+	//std::vector<int> intlist;
+	//intlist.reserve(3);
+	//intlist[2] = 5;
+	//intlist[1] = 4;
+	//intlist[0] = 3;
+
 	// Draw the Tri-Mesh
 	drawer->Draw(true);
 	RenderTerrain();
@@ -69,8 +82,8 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 	Matrix4x4 matplane;
 	matplane.Set(
 		1.0,0.0,0.0,0.0,
+		0.0,0.0,-1.0,0.0,
 		0.0,1.0,0.0,0.0,
-		0.0,0.0,1.0,0.0,
 		0.0,0.0,0.0,1.0
 		);
 
