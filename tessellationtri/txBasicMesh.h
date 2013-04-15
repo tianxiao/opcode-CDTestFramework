@@ -348,6 +348,17 @@ public:
 
 };
 
+typedef struct {
+	size_t oV;
+	size_t oE;
+	size_t oT;
+
+	std::vector<txPoint3> opoints;
+	std::vector<txVertex*> overtices;
+	std::vector<txEdge*> oedges;
+	std::vector<txTriangle*> otriangles;
+} MeshData;
+
 class txBasicMesh
 {
 public:
@@ -375,6 +386,7 @@ private:
 
 private:
 	// TODO need to be a struct wrapper will replace by txQuaterTriCfg
+	MeshData *meshdata;
 	size_t oV;
 	size_t oE;
 	size_t oT;
@@ -396,4 +408,7 @@ private:
 
 	txQuaterTriCfg *triCfg;
 };
+
+
+
 

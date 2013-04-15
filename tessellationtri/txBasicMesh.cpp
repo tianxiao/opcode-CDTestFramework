@@ -136,7 +136,7 @@ void txBasicMesh::IterateOEdgesCreateNewMiddleVertex()
 		// and use this ZERO as a logic to update it later!
 		M->numEdges = 0;
 		// calculate the geometry position of the middle points 
-		txPoint3 mp = CalculateMiddlePoint(opoints[v0->pointId],opoints[v1->pointId]);
+		txPoint3 mp = CalculateMiddlePoint(npoints[v0->pointId],npoints[v1->pointId]);
 		M->pointId = mIndex;
 		// upate the new points list
 		npoints[mIndex] = mp;
@@ -190,7 +190,18 @@ void txBasicMesh::UpdateOuter3TriConnectivity()
 
 void txBasicMesh::UpdateOVertexValances()
 {
-	// make the 
+	// update the original vertex velance due to the edge spliting
+	// only one spliting edge is right, the other one is newly created!
+	for (size_t i=0; i<oV; i++) {
+		txVertex *v = nvertices[i];
+		for (size_t j=0; j<v->numEdges; j++) {
+			txEdge *e = nedges[v->edgeIds[j]];
+			if (e->V[0]!=i && e->V[1]!=i) {
+				// update the edge Id to the edge create by spliting!
+				v->edgeIds[j] = oV + v->edgeIds[j];
+			}
+		}
+	}
 }
 
 txPoint3 txBasicMesh::CalculateMiddlePoint(txPoint3 &p0, txPoint3 &p1)
