@@ -31,16 +31,10 @@ class txQuaterTriCfg
 {
 public:
 	txQuaterTriCfg(	
-		std::vector<txVertex*> &overtices_,
-		std::vector<txEdge*> &oedges_,
-		std::vector<txTriangle*> &otriangles_,
 		std::vector<txVertex*> &nvertices_,
 		std::vector<txEdge*> &nedges_,
 		std::vector<txTriangle*> &ntriangles_)
-		:overtices(overtices_)
-		,oedges(oedges_)
-		,otriangles(otriangles_)
-		,nvertices(nvertices_)
+		:nvertices(nvertices_)
 		,nedges(nedges_)
 		,ntriangles(ntriangles_)
 	{}
@@ -49,9 +43,6 @@ public:
 	txQuaterTriCfg* DeepCopy()
 	{
 		return new txQuaterTriCfg(
-			this->overtices,
-			this->oedges,
-			this->otriangles,
 			this->nvertices,
 			this->nedges,
 			this->ntriangles);
@@ -67,20 +58,20 @@ public:
 
 		//***************************************
 
-		T0 = otriangles[i];
+		T0 = ntriangles[i];
 		
 		v0 = T0->V[0]; v1 = T0->V[1]; v2 = T0->V[2];
 		
-		V0 = overtices[v0];
-		V1 = overtices[v1];
-		V2 = overtices[v2];
+		V0 = nvertices[v0];
+		V1 = nvertices[v1];
+		V2 = nvertices[v2];
 
 		
 		e0 = T0->E[0]; e1 = T0->E[1]; e2 = T0->E[2];
 		
-		E0= oedges[e0];
-		E1 = oedges[e1];
-		E2 = oedges[e2];
+		E0 = nedges[e0];
+		E1 = nedges[e1];
+		E2 = nedges[e2];
 
 		
 		m0 = oV + e0; m1 = oV + e1; m2 = oV + e2;
@@ -125,7 +116,7 @@ public:
 		T1->E[0] = e0__;   T1->E[1] = e2_;   T1->E[2] = e0;   T1->A[0] = i;
 		T1->V[0] = m0;     T1->V[1] = m2;    T1->V[2] = v0;
 		T2->E[0] = e1__;   T2->E[1] = e0_;   T2->E[2] = e1;   T2->A[0] = i;
-		T2->V[0] = m0;     T2->V[1] = m1;    T2->V[2] = v1;
+		T2->V[0] = m0;     T2->V[1] = v1;    T2->V[2] = m1;
 		T3->E[0] = e2__;   T3->E[1] = e1_;   T3->E[2] = e2;   T3->A[0] = i;
 		T3->V[0] = m2;     T3->V[1] = m1;    T3->V[2] = v2;
 	}
@@ -176,8 +167,51 @@ public:
 		t->E0_->T[1] = t->T2->A[1];
 	}
 
-	void static UpdateMiddleVertexValances() {
-		
+	void static UpdateMiddleVertexValances(txQuaterTriCfg *t) {
+		//txVertex *M[] = {t->M0, t->M1, t->M2};
+		//for (size_t i=0; i<3; i++) {
+		//	if (M[i]->numEdges == 0) {
+		//		M[i]->numEdges = 4;
+		//	}
+		//}
+		txVertex *M0, *M1, *M2;
+		M0 = t->M0; M1 = t->M1; M2 = t->M2;
+
+		if (M0->numEdges==0) {
+			M0->numEdges = 4;
+			M0->edgeIds[0] = t->e0_;
+			M0->edgeIds[1] = t->e1__;
+			M0->edgeIds[2] = t->e0__;
+			M0->edgeIds[3] = t->e0;
+		} else if (M0->numEdges==4) {
+			M0->numEdges = 6;
+			M0->edgeIds[4] = t->e0__;
+			M0->edgeIds[5] = t->e1__;
+		}
+
+		if (M2->numEdges==0) {
+			M2->numEdges = 4;
+			M2->edgeIds[0] = t->e2_;
+			M2->edgeIds[1] = t->e0__;
+			M2->edgeIds[2] = t->e2__;
+			M2->edgeIds[3] = t->e2;
+		} else if (M2->numEdges==4){
+			M2->numEdges = 6;
+			M2->edgeIds[4] = t->e2__;
+			M2->edgeIds[5] = t->e0__;
+		}
+
+		if (M1->numEdges==0) {
+			M1->numEdges = 4;
+			M1->edgeIds[0] = t->e1_;
+			M1->edgeIds[1] = t->e2__;
+			M1->edgeIds[2] = t->e1__;
+			M1->edgeIds[3] = t->e1;
+		} else if (M1->numEdges==4) {
+			M1->numEdges = 6;
+			M1->edgeIds[4] = t->e1__;
+			M1->edgeIds[5] = t->e2__;
+		}
 	}
 
 private:
@@ -239,6 +273,7 @@ private:
 			a->T3->A[2] = t->t1;
 			return true;
 		}
+		return false;
 	}
 
 	bool static UpdateOuter3Tri12Connectivity(txQuaterTriCfg *t, txQuaterTriCfg *a){
@@ -299,9 +334,6 @@ public:
 	size_t oE;
 	size_t oT;
 
-	std::vector<txVertex*> &overtices;
-	std::vector<txEdge*> &oedges;
-	std::vector<txTriangle*> &otriangles;
 
 	// next level
 	size_t nV;
@@ -328,12 +360,15 @@ private:
 	void AllocatePVET();
 	void DeallocatePVET();
 
+	// Assign the original mesh info to the subdivision mesh
+	void CopyO2N();
+
 	void IterateOEdgesCreateNewMiddleVertex();
 	void IterateOTrianglesCreateNewTrisEdges();
 	void UpdateOuter3TriConnectivity();
+	void UpdateOuterSplitEdgesConnectivity();
+	void UpdateMiddleTriConnectivity();
 	void UpdateMiddleTriConnectivity(txQuaterTriCfg *t, size_t i);
-	void UpdateMiddleVertexValances();
-	void UpdateT0();
 	void UpdateOVertexValances();
 
 	txPoint3 CalculateMiddlePoint(txPoint3 &p0, txPoint3 &p1);
