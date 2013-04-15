@@ -6,11 +6,13 @@
 
 txBasicMesh::txBasicMesh(void)
 {
+	AllocatePVET();
 }
 
 
 txBasicMesh::~txBasicMesh(void)
 {
+	DeallocatePVET();
 }
 
 void txBasicMesh::SubdivsionMesh()
@@ -54,12 +56,17 @@ void txBasicMesh::AllocatePVET()
 		ntriangles.push_back(pt);
 	}
 
+	triCfg = new txQuaterTriCfg(overtices,oedges,otriangles,nvertices,nedges,ntriangles);
 
 }
 
 void txBasicMesh::DeallocatePVET()
 {
-	
+	// delete the txVertex, txEdge, txTriangle
+	// TODO!!!
+
+	// delete Traingle Configure
+	delete triCfg;
 }
 
 void txBasicMesh::IterateOEdgesCreateNewMiddleVertex()
@@ -76,6 +83,9 @@ void txBasicMesh::IterateOEdgesCreateNewMiddleVertex()
 		// get new middle point position to be updated
 		size_t mIndex = oV + i;
 		txVertex *M  = nvertices[mIndex];
+		// assign this middle vertex's valence to Zero 
+		// and use this ZERO as a logic to update it later!
+		M->numEdges = 0;
 		// calculate the geometry position of the middle points 
 		txPoint3 mp = CalculateMiddlePoint(opoints[v0->pointId],opoints[v1->pointId]);
 		M->pointId = mIndex;
@@ -92,71 +102,42 @@ void txBasicMesh::IterateOTrianglesCreateNewTrisEdges()
 {
 	for (size_t i=0; i<oT; i++)
 	{
-		//***************************************
-
-		txTriangle * T0 = otriangles[i];
-		size_t v0, v1, v2;
-		v0 = T0->V[0]; v1 = T0->V[1]; v2 = T0->V[2];
-		txVertex *V0 = overtices[v0];
-		txVertex *V1 = overtices[v1];
-		txVertex *V2 = overtices[v2];
-
-		size_t e0, e1, e2;
-		e0 = T0->E[0]; e1 = T0->E[1]; e2 = T0->E[2];
-		txEdge *E0 = oedges[e0];
-		txEdge *E1 = oedges[e1];
-		txEdge *E2 = oedges[e2];
-
-		size_t m0, m1, m2;
-		m0 = oV + e0; m1 = oV + e1; m2 = oV + e2;
-		txVertex *M0 = nvertices[m0];
-		txVertex *M1 = nvertices[m1];
-		txVertex *M2 = nvertices[m2];
-
-		size_t e0_, e1_, e2_;
-		e0_ = oE + e0; e1_ = oE + e1; e2_ = oE + e2;
-		txEdge *E0_ = nedges[e0_];
-		txEdge *E1_ = nedges[e1_];
-		txEdge *E2_ = nedges[e2_];
-		
-		//---------------------------------------
-		size_t t1, t2, t3;
-		t1 = oT + i; t2 = oT*2 + i; t3 = oT*3 + i;
-		txTriangle *T1 = ntriangles[t1];
-		txTriangle *T2 = ntriangles[t2];
-		txTriangle *T3 = ntriangles[t3];
-
-		size_t e0__, e1__, e2__;
-		e0__ = 2*oE +i; e1__ = 2*oE + oT + i; e2__ = 2*oE + 2*oT + i;
-		txEdge *E0__ = nedges[e0__];
-		txEdge *E1__ = nedges[e1__];
-		txEdge *E2__ = nedges[e2__];
-
-		//***************************************
-
-		E0__->V[0] = m2; E0__->V[1] = m0;
-		E0__->T[0] = i;  E0__->T[1] = t1;
-		E1__->V[0] = m0; E1__->V[1] = m1;
-		E1__->T[0] = i;  E1__->T[1] = t2;
-		E2__->V[0] = m1; E2__->V[1] = m2;
-		E2__->T[0] = i;  E2__->T[1] = t3;
-
-		T1->E[0] = e0__;   T1->E[1] = e2_;   T1->E[2] = e0;   T1->A[0] = i;
-		T1->V[0] = m0;     T1->V[1] = m2;    T1->V[2] = v0;
-		T2->E[0] = e1__;   T2->E[1] = e0_;   T2->E[2] = e1;   T2->A[0] = i;
-		T2->V[0] = m0;     T2->V[1] = m1;    T2->V[2] = v1;
-		T3->E[0] = e2__;   T3->E[1] = e1_;   T3->E[2] = e2;   T3->A[0] = i;
-		T3->V[0] = m2;     T3->V[1] = m1;    T3->V[2] = v2;
-
+		triCfg->ConstructInternalVETIndex(i);
+		triCfg->UpdateNewTrianglesNewVerticesInOTriangle();
 	}
 }
 
 void txBasicMesh::UpdateOuter3TriConnectivity()
 {
+	txQuaterTriCfg *a0Cfg, *a1Cfg, *a2Cfg;
+	a0Cfg = triCfg->DeepCopy();
+	a1Cfg = triCfg->DeepCopy();
+	a2Cfg = triCfg->DeepCopy();
+
 	for (size_t i=0; i<oT; i++)
 	{
+		triCfg->ConstructInternalVETIndex(i);
 
+		size_t a0 = triCfg->T0->A[0];
+		a0Cfg->ConstructInternalVETIndex(a0);
+		txQuaterTriCfg::UpdateOuter3TriConnectivity(triCfg,a0Cfg);
+
+		size_t a1 = triCfg->T0->A[1];
+		a1Cfg->ConstructInternalVETIndex(a1);
+		txQuaterTriCfg::UpdateOuter3TriConnectivity(triCfg,a1Cfg);
+
+		size_t a2 = triCfg->T0->A[2];
+		a2Cfg->ConstructInternalVETIndex(a2);
+		txQuaterTriCfg::UpdateOuter3TriConnectivity(triCfg,a2Cfg);
+
+		txQuaterTriCfg::UpdateOuterSplitEdgesConnectivity(triCfg);
+
+		UpdateMiddleTriConnectivity(triCfg,i);
 	}
+
+	delete a0Cfg;
+	delete a1Cfg;
+	delete a2Cfg;
 }
 
 void txBasicMesh::UpdateMiddleVertexValances()
@@ -166,7 +147,12 @@ void txBasicMesh::UpdateMiddleVertexValances()
 
 void txBasicMesh::UpdateT0()
 {
+	for (size_t i=0; i<otriangles.size(); i++) {
+		triCfg->ConstructInternalVETIndex(i);
 
+		// assign the o to n
+
+	}
 }
 
 void txBasicMesh::UpdateOVertexValances()
@@ -180,4 +166,12 @@ txPoint3 txBasicMesh::CalculateMiddlePoint(txPoint3 &p0, txPoint3 &p1)
 
 	assert(true);
 	return p;
+}
+
+void txBasicMesh::UpdateMiddleTriConnectivity(txQuaterTriCfg *t, size_t i)
+{
+	txTriangle *T0 = ntriangles[i];
+	T0->V[0] = t->m0;   T0->V[1] = t->m1;   T0->V[2] = t->m2;
+	T0->E[0] = t->e1__; T0->E[1] = t->e2__; T0->E[2] = t->e0__;
+	T0->A[0] = t->t2;   T0->A[1] = t->t3;   T0->A[2] = t->t1;
 }

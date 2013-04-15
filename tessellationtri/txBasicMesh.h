@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <assert.h>
 
 typedef struct
 {
@@ -45,7 +46,22 @@ public:
 	{}
 
 
+	txQuaterTriCfg* DeepCopy()
+	{
+		return new txQuaterTriCfg(
+			this->overtices,
+			this->oedges,
+			this->otriangles,
+			this->nvertices,
+			this->nedges,
+			this->ntriangles);
+	}
+
+
 public:
+	/**
+	* It's a query API, it does not update(change) the triangle connectivity!
+	**/
 	void ConstructInternalVETIndex(size_t i){
 		this->i = i;
 
@@ -114,6 +130,147 @@ public:
 		T3->V[0] = m2;     T3->V[1] = m1;    T3->V[2] = v2;
 	}
 
+//// only for debug
+//private:
+//	static size_t outerupdatecount;
+
+public:
+	void static UpdateOuter3TriConnectivity(txQuaterTriCfg *t, txQuaterTriCfg *a){
+		//outerupdatecount=0;
+		size_t counter = 0;
+		if (UpdateOuter3Tri23Connectivity(t,a)) {
+			counter++;
+		}
+		if (UpdateOuter3Tri31Connectivity(t,a)) {
+			counter++;
+		}
+		if (UpdateOuter3Tri12Connectivity(t,a)) {
+			counter++;
+		}
+		// The configure must and only have one match
+		// So the outerupdatecount will alway be one after update!
+		assert(counter==1);
+	}
+
+	/**
+	* This function should be called after the UpdateOuter3TriConnectivity is called,
+	* UpdateOuter3TriConnectivity construct the full triangle adjacent triangles which
+	* need in this function.
+	*/
+	void static UpdateOuterSplitEdgesConnectivity(txQuaterTriCfg *t){
+		//// TODO!!!
+		//assert(false);
+		t->E2_->T[0] = t->t1;
+		t->E2_->T[1] = t->T1->A[1];
+		t->E2->T[0]  = t->t3;
+		t->E2->T[1]  = t->T3->A[2];
+
+		t->E1_->T[0] = t->t3;
+		t->E1_->T[1] = t->T3->A[1];
+		t->E1->T[0]  = t->t2;
+		t->E1->T[1]  = t->T2->A[2];
+
+		t->E0->T[0]  = t->t1;
+		t->E0->T[1]  = t->T1->A[2];
+		t->E0_->T[0] = t->t2;
+		t->E0_->T[1] = t->T2->A[1];
+	}
+
+	void static UpdateMiddleVertexValances() {
+		
+	}
+
+private:
+	bool static UpdateOuter3Tri23Connectivity(txQuaterTriCfg *t, txQuaterTriCfg *a){
+		
+		if(t->v2==a->v0 && t->v1==a->v1) {
+			t->T2->A[2] = a->t2;
+			t->T3->A[1] = a->t1;
+			a->T2->A[1] = t->t2;
+			a->T1->A[2] = t->t3;
+			//outerupdatecount++;
+			return true;
+		}
+
+		if(t->v2==a->v1 && t->v1==a->v2 ) {
+			t->T2->A[2] = a->t3;
+			t->T3->A[1] = a->t2;
+			a->T3->A[1] = t->t2;
+			a->T2->A[2] = t->t3;
+			//outerupdatecount++;
+			return true;
+		}
+
+		if(t->v2==a->v2 && t->v1==a->v0 ) {
+			t->T2->A[2] = a->t1;
+			t->T3->A[1] = a->t3;
+			a->T1->A[1] = t->t2;
+			a->T3->A[2] = t->t3;
+			//outerupdatecount++;
+			return true;
+		}
+		return false;
+
+	}
+
+	bool static UpdateOuter3Tri31Connectivity(txQuaterTriCfg *t, txQuaterTriCfg *a){
+		//assert(false);
+		//// TODO!!!	
+		if(t->v0==a->v0 && t->v2==a->v1) {
+			t->T1->A[1] = a->t1;
+			t->T3->A[2] = a->t2;
+			a->T1->A[2] = t->t1;
+			a->T2->A[1] = t->t3;
+			return true;
+		}
+
+		if(t->v0==a->t2 && t->v2==a->t3) {
+			t->T1->A[1] = a->t2;
+			t->T3->A[2] = a->t3;
+			a->T2->A[2] = t->t1;
+			a->T3->A[1] = t->t3;
+			return true;
+		}
+
+		if(t->v0==a->t3 && t->v2==a->t1) {
+			t->T1->A[1] = a->t3;
+			t->T3->A[2] = a->t1;
+			a->T1->A[1] = t->t3;
+			a->T3->A[2] = t->t1;
+			return true;
+		}
+	}
+
+	bool static UpdateOuter3Tri12Connectivity(txQuaterTriCfg *t, txQuaterTriCfg *a){
+		//assert(false);
+		//// TODO!!!
+		if(t->v0==a->v1 && t->v1==a->v2) {
+			t->T1->A[2] = a->t2;
+			t->T2->A[1] = a->t1;
+			a->T2->A[1] = t->t1;
+			a->T1->A[2] = t->t2;
+			return true;
+		}
+
+		if(t->v0==a->v2 && t->v1==a->v1) {
+			t->T1->A[2] = a->t3;
+			t->T2->A[1] = a->t2;
+			a->T3->A[1] = t->t1;
+			a->T2->A[2] = t->t2;
+			return true;
+		}
+
+		if(t->v0==a->v0 && t->v1==a->v2) {
+			t->T1->A[2] = a->t1;
+			t->T2->A[1] = a->t3;
+			a->T1->A[2] = t->t1;
+			a->T3->A[1] = t->t2;
+			return true;
+		}
+
+		return false;
+	}
+
 public:
 	// The following parameter should be sequenced in the construct
 	// And they are construct cascaded
@@ -174,6 +331,7 @@ private:
 	void IterateOEdgesCreateNewMiddleVertex();
 	void IterateOTrianglesCreateNewTrisEdges();
 	void UpdateOuter3TriConnectivity();
+	void UpdateMiddleTriConnectivity(txQuaterTriCfg *t, size_t i);
 	void UpdateMiddleVertexValances();
 	void UpdateT0();
 	void UpdateOVertexValances();
@@ -200,5 +358,7 @@ private:
 	std::vector<txVertex*> nvertices;
 	std::vector<txEdge*> nedges;
 	std::vector<txTriangle*> ntriangles;
+
+	txQuaterTriCfg *triCfg;
 };
 
