@@ -33,6 +33,12 @@
     <ClInclude Include="txBasicMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="initialmesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="importsymble.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -51,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="txBasicMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="txQuaterTriCfg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

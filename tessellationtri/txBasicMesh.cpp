@@ -1,7 +1,9 @@
 #include "StdAfx.h"
 #include "txBasicMesh.h"
+#include "initialmesh.h"
 
 #include <assert.h>
+#include <math.h>
 
 
 txBasicMesh::txBasicMesh(void)
@@ -12,6 +14,19 @@ txBasicMesh::txBasicMesh(void)
 	// for consice!
 	CopyO2N();
 
+}
+
+txBasicMesh::txBasicMesh(MeshData* meshdata) {
+	this->meshdata = meshdata;
+	oV = meshdata->oV;
+	oE = meshdata->oE;
+	oT = meshdata->oT;
+
+	AllocatePVET();
+	// After teh CopyO2N is called.
+	// The original only use for cache and will strictly not used in the algorithm
+	// for consice!
+	CopyO2N();
 }
 
 
@@ -61,7 +76,7 @@ void txBasicMesh::AllocatePVET()
 		ntriangles.push_back(pt);
 	}
 
-	triCfg = new txQuaterTriCfg(nvertices,nedges,ntriangles);
+	triCfg = new txQuaterTriCfg(oV, oE, oT, nvertices,nedges,ntriangles);
 
 }
 
@@ -76,6 +91,15 @@ void txBasicMesh::DeallocatePVET()
 
 void txBasicMesh::CopyO2N()
 {
+	std::vector<txPoint3> &opoints = meshdata->opoints;
+	std::vector<txVertex*> &overtices = meshdata->overtices;
+	std::vector<txEdge*> &oedges = meshdata->oedges;
+	std::vector<txTriangle*> &otriangles = meshdata->otriangles;
+
+	this->oV = meshdata->oV;
+	this->oE = meshdata->oE;
+	this->oT = meshdata->oT;
+
 	// assign points
 	for (size_t i=0; i<opoints.size(); i++)	{
 		npoints[i] = opoints[i];
@@ -207,8 +231,17 @@ void txBasicMesh::UpdateOVertexValances()
 txPoint3 txBasicMesh::CalculateMiddlePoint(txPoint3 &p0, txPoint3 &p1)
 {
 	txPoint3 p;
+	p.x = (p0.x+p1.x)/2.0;
+	p.y = (p0.y+p1.y)/2.0;
+	p.z = (p0.z+p1.z)/2.0;
+	double l = sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
+	// cause the raduis is default set to 1.0;
+	double rl = 1.0/l;
+	
+	p.x = rl*p.x;
+	p.y = rl*p.y;
+	p.z = rl*p.z;
 
-	assert(true);
 	return p;
 }
 
@@ -234,4 +267,57 @@ void txBasicMesh::UpdateOuterSplitEdgesConnectivity()
 		triCfg->ConstructInternalVETIndex(i);
 		txQuaterTriCfg::UpdateOuterSplitEdgesConnectivity(triCfg);
 	}
+}
+
+
+void MeshDataConfigOct(MeshData *meshdata)
+{
+	size_t &oV = (meshdata->oV);
+	size_t &oE = (meshdata->oE);
+	size_t &oT = (meshdata->oT);
+
+	std::vector<txPoint3> &opoints = (meshdata->opoints);
+	std::vector<txVertex*> &overtices = (meshdata->overtices);
+	std::vector<txEdge*> &oedges  = (meshdata->oedges);
+	std::vector<txTriangle*> &otriangles = (meshdata->otriangles);
+
+	oV = num_ov_8; oE = num_edge_8; oT = num_tri_8;
+	opoints.reserve(8);
+	overtices.reserve(8);
+	for (size_t i=0; i<oV; i++) {
+		opoints.push_back(op_8[i]);
+
+		txVertex *v = new txVertex;
+		v->pointId = ov_8[i].pointId;
+		v->numEdges = ov_8[i].numEdges;
+		for (size_t j=0; j<ov_8[i].numEdges; j++) {
+			v->edgeIds[j] = ov_8[i].edgeIds[j];
+		}
+		overtices.push_back(v);
+	}
+
+	for (size_t i=0; i<oE; i++) {
+		txEdge *e = new txEdge;
+		for (size_t j=0; j<2; j++) {
+			e->T[j] = edge_8[i].T[j];
+			e->V[j] = edge_8[i].V[j];
+		}
+		oedges.push_back(e);
+	}
+
+	for (size_t i=0; i<oT; i++) {
+		txTriangle *t = new txTriangle;
+		for (size_t j=0; j<3; j++) {
+			t->A[j] = tri_8[i].A[j];
+			t->E[j] = tri_8[i].E[j];
+			t->V[j] = tri_8[i].V[j];
+		}
+		otriangles.push_back(t);
+	}
+}
+
+void MeshDataReleaseOct()
+{
+	assert(true);
+	exit(1);
 }
