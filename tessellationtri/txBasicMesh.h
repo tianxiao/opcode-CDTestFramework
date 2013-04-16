@@ -154,6 +154,9 @@ void SUBDIVISIONTESSELL_API MeshDataReleaseTetra(MeshData *meshdata);
 
 void SUBDIVISIONTESSELL_API MeshDataOuputOFF(MeshData *meshdata, char *filename);
 
+// For debug dump meshdata info
+void SUBDIVISIONTESSELL_API MeshDataDump(MeshData *md, char *filename);
+
 
 class SUBDIVISIONTESSELL_API txBasicMesh
 {

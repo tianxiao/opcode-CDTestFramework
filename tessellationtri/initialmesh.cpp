@@ -3,7 +3,7 @@
 #include "initialmesh.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#pragma warning (disable:4996) 
 
 void MeshDataConfig(
 	MeshData *md, size_t oV, size_t oE, size_t oT, 
@@ -134,11 +134,77 @@ void MeshDataOuputOFF(MeshData *meshdata, char *filename)
 
 	for (size_t i=0; i<meshdata->oT; i++) {
 		fprintf(f,"%d\t%d\t%d\t%d\n",3,
-			meshdata->otriangles[i]->V[2],
+			meshdata->otriangles[i]->V[0],
 			meshdata->otriangles[i]->V[1],
-			meshdata->otriangles[i]->V[0]);
+			meshdata->otriangles[i]->V[2]);
 	}
 
 
 	fclose(f);
+}
+
+void MeshDataDump(MeshData *md, char *filename)
+{
+	FILE *f = fopen(filename,"w");
+
+	fprintf(f,"#VET INFO:\n\n");
+
+	fprintf(f,"#Vertex INFO:\n");
+	for (size_t i=0; i<md->oV; i++) {
+		fprintf(f,"   V[%2d]",i);
+	}
+	fprintf(f,"\n");
+	for (size_t i=0; i<md->oV; i++) {
+		fprintf(f,"%8d",md->overtices[i]->numEdges);
+	}
+	fprintf(f,"\n");
+	for (size_t i=0; i<6; i++) {
+		for (size_t j=0; j<md->oV; j++) {
+			if (i<md->overtices[j]->numEdges) {
+				fprintf(f,"%8d",md->overtices[j]->edgeIds[i]);
+			} else {
+				fprintf(f,"       -");
+			}
+		}
+		fprintf(f,"\n");
+	}
+	fprintf(f,"\n");
+
+	fprintf(f,"#Edge INFO:\n");
+	for (size_t i=0; i<2; i++) {
+		for (size_t j=0; j<md->oE; j++) {
+			fprintf(f,"%8d",md->oedges[j]->T[i]);
+		}
+		fprintf(f,"\n");
+	}
+	for (size_t i=0; i<2; i++) {
+		for (size_t j=0; j<md->oE; j++) {
+			fprintf(f,"%8d",md->oedges[j]->V[i]);
+		}
+		fprintf(f,"\n");
+	}
+
+	fprintf(f,"\n");
+	fprintf(f,"Triangle Info: \n");
+
+	for (size_t i=0; i<3; i++) {
+		for (size_t j=0; j<md->oT; j++) {
+			fprintf(f,"%8d",md->otriangles[j]->V[i]);
+		}
+		fprintf(f,"\n");
+	}
+	for (size_t i=0; i<3; i++) {
+		for (size_t j=0; j<md->oT; j++) {
+			fprintf(f,"%8d",md->otriangles[j]->E[i]);
+		}
+		fprintf(f,"\n");
+	}
+	for (size_t i=0; i<3; i++) {
+		for (size_t j=0; j<md->oT; j++) {
+			fprintf(f,"%8d",md->otriangles[j]->A[i]);
+		}
+		fprintf(f,"\n");
+	}
+	
+
 }
