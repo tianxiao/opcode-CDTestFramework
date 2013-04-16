@@ -152,6 +152,8 @@ void SUBDIVISIONTESSELL_API MeshDataReleaseOct(MeshData *meshdata);
 void SUBDIVISIONTESSELL_API MeshDataConfigTetra(MeshData *meshdata);
 void SUBDIVISIONTESSELL_API MeshDataReleaseTetra(MeshData *meshdata);
 
+void SUBDIVISIONTESSELL_API MeshDataOuputOFF(MeshData *meshdata, char *filename);
+
 
 class SUBDIVISIONTESSELL_API txBasicMesh
 {
@@ -162,6 +164,8 @@ public:
 	txBasicMesh(MeshData* meshdata) ;
 
 	void SubdivsionMesh();
+
+	MeshData* GetSubdivsionMeshData();
 
 private:
 	void AllocatePVET();

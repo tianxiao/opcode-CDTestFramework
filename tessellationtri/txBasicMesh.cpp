@@ -268,5 +268,20 @@ void txBasicMesh::UpdateOuterSplitEdgesConnectivity()
 	}
 }
 
+MeshData* txBasicMesh::GetSubdivsionMeshData()
+{
+	MeshData *rtn = new MeshData;
+	rtn->oV = nV;
+	rtn->oE = nE;
+	rtn->oT = nT;
+	rtn->opoints = npoints;
+	rtn->overtices = nvertices;
+	rtn->oedges = nedges;
+	rtn->otriangles = ntriangles;
+
+	return rtn;
+}
+
+
 
 

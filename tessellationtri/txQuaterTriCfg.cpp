@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "txBasicMesh.h"
+#include <stdlib.h>
 
 /**
 * It's a query API, it does not update(change) the triangle connectivity!
@@ -86,6 +87,12 @@ void txQuaterTriCfg::UpdateOuter3TriConnectivity(txQuaterTriCfg *t, txQuaterTriC
 	if (UpdateOuter3Tri12Connectivity(t,a)) {
 		counter++;
 	}
+
+	// debug
+	if (counter==2|| counter==3 || counter==0) {
+		printf("\n%d\n",counter);
+	}
+
 	// The configure must and only have one match
 	// So the outerupdatecount will alway be one after update!
 	assert(counter!=2);
