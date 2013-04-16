@@ -29,7 +29,7 @@ void txQuaterTriCfg::ConstructInternalVETIndex(size_t i){
 		
 	m0 = oV + e0; m1 = oV + e1; m2 = oV + e2;
 		
-	M0= nvertices[m0];
+	M0 = nvertices[m0];
 	M1 = nvertices[m1];
 	M2 = nvertices[m2];
 
@@ -44,7 +44,7 @@ void txQuaterTriCfg::ConstructInternalVETIndex(size_t i){
 		
 	t1 = oT + i; t2 = oT*2 + i; t3 = oT*3 + i;
 		
-	T1= ntriangles[t1];
+	T1 = ntriangles[t1];
 	T2 = ntriangles[t2];
 	T3 = ntriangles[t3];
 
@@ -69,7 +69,7 @@ void txQuaterTriCfg::UpdateNewTrianglesNewVerticesInOTriangle(){
 	T1->E[0] = e0__;   T1->E[1] = e2_;   T1->E[2] = e0;   T1->A[0] = i;
 	T1->V[0] = m0;     T1->V[1] = m2;    T1->V[2] = v0;
 	T2->E[0] = e1__;   T2->E[1] = e0_;   T2->E[2] = e1;   T2->A[0] = i;
-	T2->V[0] = m0;     T2->V[1] = v1;    T2->V[2] = m1;
+	T2->V[0] = m1;     T2->V[1] = m0;    T2->V[2] = v1;
 	T3->E[0] = e2__;   T3->E[1] = e1_;   T3->E[2] = e2;   T3->A[0] = i;
 	T3->V[0] = m2;     T3->V[1] = m1;    T3->V[2] = v2;
 }

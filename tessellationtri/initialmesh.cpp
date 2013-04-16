@@ -185,7 +185,7 @@ void MeshDataDump(MeshData *md, char *filename)
 	}
 
 	fprintf(f,"\n");
-	fprintf(f,"Triangle Info: \n");
+	fprintf(f,"#Triangle Info: \n");
 
 	for (size_t i=0; i<3; i++) {
 		for (size_t j=0; j<md->oT; j++) {
@@ -206,5 +206,5 @@ void MeshDataDump(MeshData *md, char *filename)
 		fprintf(f,"\n");
 	}
 	
-
+	fclose(f);
 }
