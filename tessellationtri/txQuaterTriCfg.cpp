@@ -207,7 +207,7 @@ bool txQuaterTriCfg::UpdateOuter3Tri31Connectivity(txQuaterTriCfg *t, txQuaterTr
 		return true;
 	}
 
-	if(t->v0==a->t2 && t->v2==a->t3) {
+	if(t->v0==a->v1 && t->v2==a->v2) {
 		t->T1->A[1] = a->t2;
 		t->T3->A[2] = a->t3;
 		a->T2->A[2] = t->t1;
@@ -215,7 +215,7 @@ bool txQuaterTriCfg::UpdateOuter3Tri31Connectivity(txQuaterTriCfg *t, txQuaterTr
 		return true;
 	}
 
-	if(t->v0==a->t3 && t->v2==a->t1) {
+	if(t->v0==a->v2 && t->v2==a->v0) {
 		t->T1->A[1] = a->t3;
 		t->T3->A[2] = a->t1;
 		a->T1->A[1] = t->t3;
@@ -228,7 +228,7 @@ bool txQuaterTriCfg::UpdateOuter3Tri31Connectivity(txQuaterTriCfg *t, txQuaterTr
 bool txQuaterTriCfg::UpdateOuter3Tri12Connectivity(txQuaterTriCfg *t, txQuaterTriCfg *a){
 	//assert(false);
 	//// TODO!!!
-	if(t->v0==a->v1 && t->v1==a->v2) {
+	if(t->v0==a->v1 && t->v1==a->v0) {
 		t->T1->A[2] = a->t2;
 		t->T2->A[1] = a->t1;
 		a->T2->A[1] = t->t1;

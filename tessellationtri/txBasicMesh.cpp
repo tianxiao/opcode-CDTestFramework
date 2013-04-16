@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "txBasicMesh.h"
-#include "initialmesh.h"
 
 #include <assert.h>
 #include <math.h>
@@ -48,7 +47,7 @@ void txBasicMesh::SubdivsionMesh()
 void txBasicMesh::AllocatePVET()
 {
 	nT = 4*oT; 
-	nE = 2*oE + 3*nT;
+	nE = 2*oE + 3*oT;
 	nV = oV + oE;
 
 	txPoint3 d;
@@ -270,54 +269,4 @@ void txBasicMesh::UpdateOuterSplitEdgesConnectivity()
 }
 
 
-void MeshDataConfigOct(MeshData *meshdata)
-{
-	size_t &oV = (meshdata->oV);
-	size_t &oE = (meshdata->oE);
-	size_t &oT = (meshdata->oT);
 
-	std::vector<txPoint3> &opoints = (meshdata->opoints);
-	std::vector<txVertex*> &overtices = (meshdata->overtices);
-	std::vector<txEdge*> &oedges  = (meshdata->oedges);
-	std::vector<txTriangle*> &otriangles = (meshdata->otriangles);
-
-	oV = num_ov_8; oE = num_edge_8; oT = num_tri_8;
-	opoints.reserve(8);
-	overtices.reserve(8);
-	for (size_t i=0; i<oV; i++) {
-		opoints.push_back(op_8[i]);
-
-		txVertex *v = new txVertex;
-		v->pointId = ov_8[i].pointId;
-		v->numEdges = ov_8[i].numEdges;
-		for (size_t j=0; j<ov_8[i].numEdges; j++) {
-			v->edgeIds[j] = ov_8[i].edgeIds[j];
-		}
-		overtices.push_back(v);
-	}
-
-	for (size_t i=0; i<oE; i++) {
-		txEdge *e = new txEdge;
-		for (size_t j=0; j<2; j++) {
-			e->T[j] = edge_8[i].T[j];
-			e->V[j] = edge_8[i].V[j];
-		}
-		oedges.push_back(e);
-	}
-
-	for (size_t i=0; i<oT; i++) {
-		txTriangle *t = new txTriangle;
-		for (size_t j=0; j<3; j++) {
-			t->A[j] = tri_8[i].A[j];
-			t->E[j] = tri_8[i].E[j];
-			t->V[j] = tri_8[i].V[j];
-		}
-		otriangles.push_back(t);
-	}
-}
-
-void MeshDataReleaseOct()
-{
-	assert(true);
-	exit(1);
-}

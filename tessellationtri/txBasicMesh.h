@@ -149,6 +149,10 @@ typedef SUBDIVISIONTESSELL_API struct {
 void SUBDIVISIONTESSELL_API MeshDataConfigOct(MeshData *meshdata);
 void SUBDIVISIONTESSELL_API MeshDataReleaseOct(MeshData *meshdata);
 
+void SUBDIVISIONTESSELL_API MeshDataConfigTetra(MeshData *meshdata);
+void SUBDIVISIONTESSELL_API MeshDataReleaseTetra(MeshData *meshdata);
+
+
 class SUBDIVISIONTESSELL_API txBasicMesh
 {
 public:
