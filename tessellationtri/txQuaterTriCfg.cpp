@@ -2,10 +2,18 @@
 #include "stdafx.h"
 #include "txBasicMesh.h"
 #include <stdlib.h>
+#include <map>
 
 /**
 * It's a query API, it does not update(change) the triangle connectivity!
 **/
+
+typedef struct
+{
+	txEdge *e;
+	size_t i;
+} EdgeIndexHashKey;
+
 void txQuaterTriCfg::ConstructInternalVETIndex(size_t i){
 	this->i = i;
 
@@ -25,7 +33,6 @@ void txQuaterTriCfg::ConstructInternalVETIndex(size_t i){
 	E0 = nedges[e0];
 	E1 = nedges[e1];
 	E2 = nedges[e2];
-
 		
 	m0 = oV + e0; m1 = oV + e1; m2 = oV + e2;
 		
@@ -36,9 +43,38 @@ void txQuaterTriCfg::ConstructInternalVETIndex(size_t i){
 		
 	e0_ = oE + e0; e1_ = oE + e1; e2_ = oE + e2;
 		
-	E0_= nedges[e0_];
+	E0_ = nedges[e0_];
 	E1_ = nedges[e1_];
 	E2_ = nedges[e2_];
+
+	if (true) {
+		if (E0->V[0]!=v0 && E0->V[1]!=v0) {
+			txEdge *tempE = E0;
+			E0 = E0_;
+			E0_ = tempE;
+			size_t tempi = e0;
+			e0 = e0_;
+			e0_ = tempi;
+		}
+
+		if (E1->V[0]!=v1 && E1->V[1]!=v1) {
+			txEdge *tempE = E1;
+			E1 = E1_;
+			E1_ = tempE;
+			size_t tempi = e1;
+			e1 = e1_;
+			e1_ = tempi;
+		} 
+
+		if (E2->V[0]!=v2 && E2->V[1]!=v2) {
+			txEdge *tempE = E2;
+			E2 = E2_;
+			E2_ = tempE;
+			size_t tempi = e2;
+			e2 = e2_;
+			e2_ = tempi;
+		}
+	}
 		
 	//---------------------------------------
 		
