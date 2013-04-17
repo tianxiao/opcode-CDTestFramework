@@ -2,6 +2,8 @@
 #include <assert.h>
 #include "txMesh.h"
 #include "./lib/mesh.h"
+#include "../txShapelib/txTriSurfaceData.h"
+#include "../txGeometrylib/txVector3.h"
 
 //#include "./lib/funcs.h"
 
@@ -9,6 +11,51 @@
 extern "C" void SolidConstructNoff( Solid **  , char *);
 extern "C" void SolidDestruct( Solid * * solid );
 extern "C" void SolidConstruct( Solid * * solid , char *FileName);
+extern "C" Solid *SolidNew();
+extern "C" {
+	void VertexConstructN( Solid ** , double , double , double ,double , double , double );
+	void VertexListIndexConstruct(Solid **);
+	void  EdgeListConstruct(Solid ** );
+	Vertex *VertexListIndex(Solid * ,int );
+	void FaceConstruct( Solid **, Vertex *, Vertex *,Vertex *);
+};
+
+void VertexListConstrcutFromSurface(Solid * * solid, txTriSurfaceData *surf)
+{
+	std::vector<txVector3> &verts = surf->GetVerts();
+	for (size_t i=0; i<verts.size(); i++) {
+		VertexConstructN(solid,verts[i].x, verts[i].y, verts[i].z, 0.0, 0.0, 0.0);
+	}
+}
+
+void FaceListConstructFromSurface(Solid * * solid, txTriSurfaceData *surf)
+{
+	int a, b, c;
+	Vertex *va, *vb, *vc;
+	std::vector<int> &indexes = surf->GetIndexes();
+	for (size_t i=0; i<indexes.size()/3; i++) {
+		a = indexes[i*3];
+		b = indexes[i*3+1];
+		c = indexes[i*3+2];
+		va = VertexListIndex(*solid, a);
+		vb = VertexListIndex(*solid, b);
+		vc = VertexListIndex(*solid, c);
+		FaceConstruct( solid, va, vb, vc);
+	}
+}
+
+void SolidConstrcutFromSurface(Solid * * solid, txTriSurfaceData *surf)
+{
+	Solid * s;
+	s = SolidNew();
+
+	VertexListConstrcutFromSurface(&s, surf);
+	VertexListIndexConstruct(&s);
+	FaceListConstructFromSurface(&s,surf);
+	EdgeListConstruct(&s);
+
+	*solid = s;
+}
 
 txMesh::txMesh(void)
 {
@@ -34,6 +81,12 @@ void txMesh::ConstructMeshFromFile(char* filename, FileFormat f/*=NOFF*/)
 	}
 	
 
+	ConstructFVEIndex();
+}
+
+void txMesh::ConstructMeshFromOFFTriSurface(txTriSurfaceData *surf)
+{
+	SolidConstrcutFromSurface(&solid, surf);
 	ConstructFVEIndex();
 }
 
@@ -154,3 +207,4 @@ int txMesh::FaceIdReverseHalfedge(halfedge *hf)
 	halfedge *rhf = HalfedgeHalfedge(hf);
 	return FaceIdHalfedge(rhf);
 }
+

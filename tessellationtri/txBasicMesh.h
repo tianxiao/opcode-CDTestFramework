@@ -69,9 +69,6 @@ public:
 
 	void UpdateNewTrianglesNewVerticesInOTriangle();
 
-//// only for debug
-//private:
-//	static size_t outerupdatecount;
 
 public:
 	void static UpdateOuter3TriConnectivity(txQuaterTriCfg *t, txQuaterTriCfg *a);
@@ -146,13 +143,14 @@ typedef SUBDIVISIONTESSELL_API struct {
 
 } MeshData;
 
-void SUBDIVISIONTESSELL_API MeshDataConfigOct(MeshData *meshdata);
+SUBDIVISIONTESSELL_API MeshData *MeshDataConfigOct();
 void SUBDIVISIONTESSELL_API MeshDataReleaseOct(MeshData *meshdata);
 
 void SUBDIVISIONTESSELL_API MeshDataConfigTetra(MeshData *meshdata);
 void SUBDIVISIONTESSELL_API MeshDataReleaseTetra(MeshData *meshdata);
 
 void SUBDIVISIONTESSELL_API MeshDataOuputOFF(MeshData *meshdata, char *filename);
+
 
 // For debug dump meshdata info
 void SUBDIVISIONTESSELL_API MeshDataDump(MeshData *md, char *filename);
@@ -203,6 +201,8 @@ private:
 	std::vector<txVertex*> nvertices;
 	std::vector<txEdge*> nedges;
 	std::vector<txTriangle*> ntriangles;
+
+	MeshData *newMeshData;
 
 	txQuaterTriCfg *triCfg;
 };

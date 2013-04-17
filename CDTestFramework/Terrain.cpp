@@ -609,6 +609,7 @@ void SurfaceImporter::InitializeFromOFF(char *filename)
 {
 	mesh = new txMesh();
 	mesh->ConstructMeshFromFile(filename);
+
 	nbVerts = mesh->VertexCount();
 	nbFaces = mesh->FaceCount();
 
@@ -618,6 +619,20 @@ void SurfaceImporter::InitializeFromOFF(char *filename)
 	InitializeOFFColors();
 	BuildVertexNormals();
 
+}
+
+void SurfaceImporter::InitializeFromOFFSurface(txTriSurfaceData *surf) {
+	mesh = new txMesh();
+	mesh->ConstructMeshFromOFFTriSurface(surf);
+
+	nbVerts = mesh->VertexCount();
+	nbFaces = mesh->FaceCount();
+
+	InitializeMeshVertices();
+	InitializeMeshFaces();
+
+	InitializeOFFColors();
+	BuildVertexNormals();
 }
 
 void SurfaceImporter::InitializeMeshVertices()
@@ -650,7 +665,7 @@ void SurfaceImporter::InitializeMeshFaces()
 void SurfaceImporter::InitializeOFFColors()
 {
 	colors = new Point[nbVerts];
-	for ( int i=0; i<nbVerts; i++ )
+	for ( size_t i=0; i<nbVerts; i++ )
 	{
 		colors[i] = Point(0.5f, 0.4f, 0.2f);
 	}

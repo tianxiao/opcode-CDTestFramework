@@ -82,10 +82,36 @@ void txBasicMesh::AllocatePVET()
 void txBasicMesh::DeallocatePVET()
 {
 	// delete the txVertex, txEdge, txTriangle => both originally and the subdivision!
-	// TODO!!!
-
+	for (size_t i=0; i<nvertices.size(); i++) {
+		if (nvertices[i]!=NULL) {
+			delete nvertices[i];
+			nvertices[i] = NULL;
+		}
+	}
+	for (size_t i=0; i<nedges.size(); i++) {
+		if (nedges[i]!=NULL) {
+			delete nedges[i];
+			nedges[i] = NULL;
+		}
+	}
+	for (size_t i=0; i<ntriangles.size(); i++) {
+		if (ntriangles[i]!=NULL) {
+			delete ntriangles[i]; 
+			ntriangles[i] = NULL;
+		}
+	}
 	// delete Traingle Configure
-	delete triCfg;
+	if (triCfg!=NULL) {
+		delete triCfg;
+		triCfg = NULL;
+	}
+	
+
+	// delete new meshdata
+	if (newMeshData!=NULL) {
+		delete newMeshData;
+		newMeshData = NULL;
+	}
 }
 
 void txBasicMesh::CopyO2N()
@@ -270,16 +296,16 @@ void txBasicMesh::UpdateOuterSplitEdgesConnectivity()
 
 MeshData* txBasicMesh::GetSubdivsionMeshData()
 {
-	MeshData *rtn = new MeshData;
-	rtn->oV = nV;
-	rtn->oE = nE;
-	rtn->oT = nT;
-	rtn->opoints = npoints;
-	rtn->overtices = nvertices;
-	rtn->oedges = nedges;
-	rtn->otriangles = ntriangles;
+	newMeshData = new MeshData;
+	newMeshData->oV = nV;
+	newMeshData->oE = nE;
+	newMeshData->oT = nT;
+	newMeshData->opoints = npoints;
+	newMeshData->overtices = nvertices;
+	newMeshData->oedges = nedges;
+	newMeshData->otriangles = ntriangles;
 
-	return rtn;
+	return newMeshData;
 }
 
 

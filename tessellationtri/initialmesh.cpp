@@ -5,6 +5,14 @@
 #include <stdio.h>
 #pragma warning (disable:4996) 
 
+template<class T>
+void txDelete(T* p) {
+	if (p!=NULL) {
+		delete p;
+		p = NULL;
+	}
+}
+
 void MeshDataConfig(
 	MeshData *md, size_t oV, size_t oE, size_t oT, 
 	txPoint3 P[], txVertex V[], txEdge E[], txTriangle T[]
@@ -56,8 +64,9 @@ void MeshDataConfig(
 }
 
 
-void MeshDataConfigOct(MeshData *meshdata)
+MeshData * MeshDataConfigOct()
 {
+	MeshData *meshdata = new MeshData;
 	size_t &oV = (meshdata->oV);
 	size_t &oE = (meshdata->oE);
 	size_t &oT = (meshdata->oT);
@@ -102,12 +111,34 @@ void MeshDataConfigOct(MeshData *meshdata)
 		}
 		otriangles.push_back(t);
 	}
+
+	return meshdata;
 }
 
-void MeshDataReleaseOct()
+void MeshDataReleaseOct(MeshData *meshdata)
 {
-	assert(true);
-	exit(1);
+	assert(meshdata);
+	size_t oV = meshdata->oV;
+	size_t oE = meshdata->oE;
+	size_t oT = meshdata->oT;
+	assert(oV==meshdata->opoints.size());
+	assert(oV==meshdata->overtices.size());
+	assert(oE==meshdata->oedges.size());
+	assert(oT==meshdata->otriangles.size());
+
+	for (size_t i=0; i<oV; i++) {
+		txDelete(meshdata->overtices[i]);
+	}
+
+	for (size_t i=0; i<oE; i++) {
+		txDelete(meshdata->oedges[i]);
+	}
+
+	for (size_t i=0; i<oT; i++) {
+		txDelete(meshdata->otriangles[i]);
+	}
+
+	txDelete(meshdata);
 }
 
 void MeshDataConfigTetra(MeshData *meshdata)

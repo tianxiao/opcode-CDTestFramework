@@ -4,6 +4,8 @@
 #include "TXSurfaceDrawer.h"
 #include "TXOpcodeModelBuilder.h"
 #include "../graphstructure/TXPatchDetector.h"
+#include "../tessellationtri/subdivisionlevel.h"
+#include "../txShapelib/txTriSurfaceData.h"
 
 
 SphsereMeshPlaneMeshQuery::SphsereMeshPlaneMeshQuery(void)
@@ -19,13 +21,20 @@ void SphsereMeshPlaneMeshQuery::Init()
 {
 	surface = new SurfaceImporter();
 	assert(surface);
+	// Initialize from OFF file
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\bunny_nf500.noff";
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\tetra.off";
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\sphere3.off";
 	// char *filename = "E:\\motionsolve\\ProjectTime\\20130326\\meshlib\\meshes\\cube.off";
-	 char *filename = "E:\\motionsolve\\ProjectTime\\20130408\\trimesh.off";
-	 
-	surface->InitializeFromOFF(filename);
+	// char *filename = "E:\\motionsolve\\ProjectTime\\20130408\\trimesh.off";
+	// 
+	//surface->InitializeFromOFF(filename);
+	//mesh = surface->GetMesh();
+
+	// Initialize from subdivision surface.
+	// construct subvision
+	txTessellateSphere(1.0,4,1,surf);
+	surface->InitializeFromOFFSurface(surf);
 	mesh = surface->GetMesh();
 
 	drawer = new TXSurfaceDrawer(surface);

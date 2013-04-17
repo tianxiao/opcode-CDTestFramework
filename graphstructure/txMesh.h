@@ -10,6 +10,8 @@ struct vertex;
 struct edge;
 struct halfedge;
 
+class txTriSurfaceData;
+
 enum FileFormat
 {
 	NOFF,
@@ -23,6 +25,7 @@ public:
 	~txMesh(void);
 
 	void ConstructMeshFromFile(char* filename, FileFormat f=NOFF);
+	void ConstructMeshFromOFFTriSurface(txTriSurfaceData *surf);
 
 	std::vector<face*> &GetFaceList() { return facelist; };
 	void GetFaceVertexIdListByFId(const int faceno, int &a, int &b, int &c);

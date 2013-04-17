@@ -31,6 +31,7 @@
 	const Model*	GetTerrainModel();
 
 	class txMesh;
+	class txTriSurfaceData;
 
 	class SurfaceImporter
 	{
@@ -43,6 +44,8 @@
 		void InitializeFromFunction();
 
 		void InitializeFromOFF(char *filename);
+
+		void InitializeFromOFFSurface(txTriSurfaceData *surf);
 
 	public:
 		Point  * Verts()	{ return verts; }

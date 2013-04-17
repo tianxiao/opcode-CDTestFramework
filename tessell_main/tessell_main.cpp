@@ -4,9 +4,6 @@
 #include "stdafx.h"
 #include "../tessellationtri/txBasicMesh.h"
 
-MeshData meshdata;
-
-
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -32,43 +29,48 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//-------------------OCT
 
-	MeshDataConfigOct(&meshdata);
-	MeshDataDump(&meshdata,"m28dump.txt");
+	MeshData *meshdata = MeshDataConfigOct();
+	MeshDataDump(meshdata,"m28dump.txt");
 	
-	txBasicMesh om0(&meshdata);
-	om0.SubdivsionMesh();
-	MeshDataOuputOFF(om0.GetSubdivsionMeshData(),"mOct0.off");
+	//txBasicMesh om0(&meshdata);
+	//om0.SubdivsionMesh();
+	//MeshDataOuputOFF(om0.GetSubdivsionMeshData(),"mOct0.off");
 
-	txBasicMesh om1(om0.GetSubdivsionMeshData());
-	om1.SubdivsionMesh();
-	MeshDataOuputOFF(om1.GetSubdivsionMeshData(),"mOct1.off");
+	//txBasicMesh om1(om0.GetSubdivsionMeshData());
+	//om1.SubdivsionMesh();
+	//MeshDataOuputOFF(om1.GetSubdivsionMeshData(),"mOct1.off");
 
-	txBasicMesh om2(om1.GetSubdivsionMeshData());
-	om2.SubdivsionMesh();
-	MeshDataOuputOFF(om2.GetSubdivsionMeshData(),"mOct2.off");
+	//txBasicMesh om2(om1.GetSubdivsionMeshData());
+	//om2.SubdivsionMesh();
+	//MeshDataOuputOFF(om2.GetSubdivsionMeshData(),"mOct2.off");
 
-	txBasicMesh om3(om2.GetSubdivsionMeshData());
-	om3.SubdivsionMesh();
-	MeshDataOuputOFF(om3.GetSubdivsionMeshData(),"mOct3.off");
+	//txBasicMesh om3(om2.GetSubdivsionMeshData());
+	//om3.SubdivsionMesh();
+	//MeshDataOuputOFF(om3.GetSubdivsionMeshData(),"mOct3.off");
 
-	txBasicMesh om4(om3.GetSubdivsionMeshData());
-	om4.SubdivsionMesh();
-	MeshDataOuputOFF(om4.GetSubdivsionMeshData(),"mOct4.off");
+	//txBasicMesh om4(om3.GetSubdivsionMeshData());
+	//om4.SubdivsionMesh();
+	//MeshDataOuputOFF(om4.GetSubdivsionMeshData(),"mOct4.off");
 
-	txBasicMesh om5(om4.GetSubdivsionMeshData());
-	om5.SubdivsionMesh();
-	MeshDataOuputOFF(om5.GetSubdivsionMeshData(),"mOct5.off");
+	//txBasicMesh om5(om4.GetSubdivsionMeshData());
+	//om5.SubdivsionMesh();
+	//MeshDataOuputOFF(om5.GetSubdivsionMeshData(),"mOct5.off");
 
-	txBasicMesh om6(om5.GetSubdivsionMeshData());
-	om6.SubdivsionMesh();
-	MeshDataOuputOFF(om6.GetSubdivsionMeshData(),"mOct6.off");
+	//txBasicMesh om6(om5.GetSubdivsionMeshData());
+	//om6.SubdivsionMesh();
+	//MeshDataOuputOFF(om6.GetSubdivsionMeshData(),"mOct6.off");
 
-	//txBasicMesh recur(&meshdata);
-	//for (size_t i=0; i<3; i++) {
-	//	recur.SubdivsionMesh();
-	//	txBasicMesh inter(recur.GetSubdivsionMeshData());
-	//	inter.SubdivsionMesh();
-	//}
+	txBasicMesh *recur = new txBasicMesh(meshdata);
+	MeshDataReleaseOct(meshdata);
+	for (size_t i=0; i<9; i++) {
+		recur->SubdivsionMesh();
+		txBasicMesh *inter = new txBasicMesh(recur->GetSubdivsionMeshData());
+		delete recur;
+		recur = inter;
+	}
+	recur->SubdivsionMesh();
+	MeshDataOuputOFF(recur->GetSubdivsionMeshData(),"MOct90.off");
+	delete recur;
 
 	return 0;
 }

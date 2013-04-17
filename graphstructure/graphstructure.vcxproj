@@ -117,6 +117,14 @@
     <ClCompile Include="txMesh.cpp" />
     <ClCompile Include="TXPatchDetector.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\txGeometrylib\txGeometrylib.vcxproj">
+      <Project>{62b6eee3-153e-4d1c-b53b-9181f3c5dea2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\txShapelib\txShapelib.vcxproj">
+      <Project>{c8a5725a-cfcf-40ed-83dd-9df3014908c3}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -83,6 +83,9 @@ void SolidDestruct( Solid ** );
 int  SolidConvexity( Solid * s );
 void SolidConstructNoff( Solid **  , char *);
 
+// Add the solid allocate 
+Solid *SolidNew();
+
 
 int  ListInsertNode( Node **, void *, int );
 int  ListDeleteNode( Node **, void *, int );

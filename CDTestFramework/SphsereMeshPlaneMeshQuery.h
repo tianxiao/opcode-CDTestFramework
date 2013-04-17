@@ -5,6 +5,7 @@ class SurfaceImporter;
 class TXSurfaceDrawer;
 class TXOpcodeModelBuilder;
 class txMesh;
+class txTriSurfaceData;
 
 enum SphereAppState
 {
@@ -51,6 +52,9 @@ public:
 	TXSurfaceDrawer *drawer;
 	TXOpcodeModelBuilder *modelbuilder;
 
+
+	// Initial from surf
+	txTriSurfaceData *surf;
 	
 };
 
