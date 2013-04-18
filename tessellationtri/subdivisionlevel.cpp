@@ -24,7 +24,7 @@ void AllocateMeshData(MeshData *md, txVector3 *verts, int *indexes) {
 int txTessellateSphere(const double radius, const int refinement_level, int is_solid_inside, txTriSurfaceData *&surf)
 {
 	// For win32 the refinement level need not to dense! other wise OUT OF MEMORY!
-	assert(refinement_level>0);
+	//assert(refinement_level>0);
 	assert(refinement_level<7);
 
 	MeshData *meshdata = MeshDataConfigOct();
