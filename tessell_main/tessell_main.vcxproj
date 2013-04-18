@@ -89,6 +89,12 @@
     <ProjectReference Include="..\tessellationtri\tessellationtri.vcxproj">
       <Project>{b7459ee4-1aa4-48af-b93a-694d5f4970f4}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\txIOlib\txIOlib.vcxproj">
+      <Project>{685cf889-b865-479e-9c80-0b2ff806b3a6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\txShapelib\txShapelib.vcxproj">
+      <Project>{c8a5725a-cfcf-40ed-83dd-9df3014908c3}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

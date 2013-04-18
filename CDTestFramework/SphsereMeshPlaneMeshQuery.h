@@ -55,6 +55,12 @@ public:
 
 	// Initial from surf
 	txTriSurfaceData *surf;
+
+	SurfaceImporter *surface2;
+	txTriSurfaceData *surf2;
+	txMesh *mesh2;
+	TXSurfaceDrawer *drawer2;
+	TXOpcodeModelBuilder *modelbuilder2;
 	
 };
 

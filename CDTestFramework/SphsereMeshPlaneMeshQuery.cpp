@@ -5,7 +5,9 @@
 #include "TXOpcodeModelBuilder.h"
 #include "../graphstructure/TXPatchDetector.h"
 #include "../tessellationtri/subdivisionlevel.h"
+#include "../tessellationtri/txFrustumSubdivision.h"
 #include "../txShapelib/txTriSurfaceData.h"
+#include "../txShapelib/txFrustum.h"
 
 
 SphsereMeshPlaneMeshQuery::SphsereMeshPlaneMeshQuery(void)
@@ -33,7 +35,7 @@ void SphsereMeshPlaneMeshQuery::Init()
 
 	// Initialize from subdivision surface.
 	// construct subvision
-	txTessellateSphere(1.0,4,1,surf);
+	txTessellateSphere(1.0,2,1,surf);
 	surface->InitializeFromOFFSurface(surf);
 	mesh = surface->GetMesh();
 
@@ -42,6 +44,24 @@ void SphsereMeshPlaneMeshQuery::Init()
 
 	modelbuilder = new TXOpcodeModelBuilder(surface);
 	assert(modelbuilder);
+
+	// for surface 2
+	surface2 = new SurfaceImporter();
+	assert(surface2);
+
+	txFrustum frustum(1.0, 1.0, 0.2);
+	txFrustumSubdivision subfrustum(&frustum,30);
+	subfrustum.Subdivision();
+	surf2 = new txTriSurfaceData(*subfrustum.GetTriSurfData());
+
+	surface2->InitializeFromOFFSurface(surf2);
+	mesh2 = surface2->GetMesh();
+
+	drawer2 = new TXSurfaceDrawer(surface2);
+	assert(drawer2);
+
+	modelbuilder2 = new TXOpcodeModelBuilder(surface2);
+	assert(modelbuilder2);
 
 	// With Patch-Finder
 	pfappset = WITHPATCHFINDER;
@@ -56,6 +76,13 @@ void SphsereMeshPlaneMeshQuery::Release()
 	drawer = NULL;
 	delete modelbuilder;
 	modelbuilder = NULL;
+	delete surface2;
+	surface2 = NULL;
+	delete drawer2;
+	drawer2 = NULL;
+	delete modelbuilder2;
+	modelbuilder2 = NULL;
+	delete surf2;
 }
 
 void SphsereMeshPlaneMeshQuery::PerformTest()
@@ -72,7 +99,8 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 	//intlist[0] = 3;
 
 	// Draw the Tri-Mesh
-	drawer->Draw(true);
+	//drawer->Draw(true);
+	drawer2->Draw(true);
 	RenderTerrain();
 
 	const Model *TM2 = GetTerrainModel();
@@ -131,7 +159,7 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 				patchdetector.DetectPath();
 				size_t *patchindices = patchdetector.PatchIndeces1();
 				// Rnder the patch face patch
-				RenderSurfaceTriangles(surface, patchdetector.PatchCount1(), patchindices);
+				//RenderSurfaceTriangles(surface, patchdetector.PatchCount1(), patchindices);
 
 			} else {
 			

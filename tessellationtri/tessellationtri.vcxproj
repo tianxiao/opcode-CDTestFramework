@@ -84,6 +84,7 @@
     <ClInclude Include="subdivisionlevel.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="txBasicMesh.h" />
+    <ClInclude Include="txFrustumSubdivision.h" />
     <ClInclude Include="txshapes.h" />
     <ClInclude Include="txSubdivisionTopo.h" />
   </ItemGroup>
@@ -104,6 +105,7 @@
     <ClCompile Include="subdivisionlevel.cpp" />
     <ClCompile Include="tessellationtri.cpp" />
     <ClCompile Include="txBasicMesh.cpp" />
+    <ClCompile Include="txFrustumSubdivision.cpp" />
     <ClCompile Include="txQuaterTriCfg.cpp" />
     <ClCompile Include="txshapes.cpp" />
     <ClCompile Include="txSubdivisionTopo.cpp" />

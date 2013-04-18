@@ -18,6 +18,10 @@ public:
 	std::vector<txVector3> & GetVerts() { return verts; };
 	std::vector<int> & GetIndexes() { return indexes; };
 
+	// Efficiency consideration & also avoid the cross memory allocation!
+	void AllocateVerts(size_t size) { verts.reserve(size); };
+	void AllocateIndexes(size_t size) { indexes.reserve(size); };
+
 private:
 	std::vector<txVector3> verts;
 	std::vector<int> indexes;

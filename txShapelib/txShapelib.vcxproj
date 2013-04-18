@@ -81,6 +81,7 @@
     <ClInclude Include="importexport.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="txFrustum.h" />
     <ClInclude Include="txTriSurfaceData.h" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +97,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="txFrustum.cpp" />
     <ClCompile Include="txShapelib.cpp" />
     <ClCompile Include="txTriSurfaceData.cpp" />
   </ItemGroup>

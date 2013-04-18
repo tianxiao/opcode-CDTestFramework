@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "../tessellationtri/txBasicMesh.h"
+#include "../tessellationtri/txFrustumSubdivision.h"
+#include "../txShapelib/txFrustum.h"
+#include "../txShapelib/txTriSurfaceData.h"
+#include "../txIOlib/txTriSurfaceDataImEx.h"
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -62,7 +66,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	txBasicMesh *recur = new txBasicMesh(meshdata);
 	MeshDataReleaseOct(meshdata);
-	for (size_t i=0; i<9; i++) {
+	for (size_t i=0; i<3/*9*/; i++) {
 		recur->SubdivsionMesh();
 		txBasicMesh *inter = new txBasicMesh(recur->GetSubdivsionMeshData());
 		delete recur;
@@ -71,6 +75,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	recur->SubdivsionMesh();
 	MeshDataOuputOFF(recur->GetSubdivsionMeshData(),"MOct90.off");
 	delete recur;
+
+	{
+		txFrustum frustum(1.0, 1.0, 0.2);
+		txFrustumSubdivision subfrustum(&frustum,30);
+		subfrustum.Subdivision();
+		txTriSurfaceData surf2(*subfrustum.GetTriSurfData());
+		txTriSurfaceDataImEx::ExportToOFFFile(&surf2,"Frustrum.off");
+	}
 
 	return 0;
 }

@@ -143,6 +143,9 @@
     <ProjectReference Include="..\tessellationtri\tessellationtri.vcxproj">
       <Project>{b7459ee4-1aa4-48af-b93a-694d5f4970f4}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\txShapelib\txShapelib.vcxproj">
+      <Project>{c8a5725a-cfcf-40ed-83dd-9df3014908c3}</Project>
+    </ProjectReference>
     <ProjectReference Include="Opcode\Opcode.vcxproj">
       <Project>{dbe44ca3-2912-4441-8d99-aa2242688ad2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
