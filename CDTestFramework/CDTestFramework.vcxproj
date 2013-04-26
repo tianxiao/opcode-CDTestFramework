@@ -107,6 +107,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="txFourPeakSurfacePlaneQuery.cpp" />
     <ClCompile Include="TXOpcodeModelBuilder.cpp" />
     <ClCompile Include="TXSurfaceDrawer.cpp" />
   </ItemGroup>
@@ -129,6 +130,7 @@
     <ClInclude Include="SphsereMeshPlaneMeshQuery.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="txFourPeakSurfacePlaneQuery.h" />
     <ClInclude Include="TXOpcodeModelBuilder.h" />
     <ClInclude Include="TXSurfaceDrawer.h" />
   </ItemGroup>
@@ -142,6 +144,12 @@
     </ProjectReference>
     <ProjectReference Include="..\tessellationtri\tessellationtri.vcxproj">
       <Project>{b7459ee4-1aa4-48af-b93a-694d5f4970f4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\txIOlib\txIOlib.vcxproj">
+      <Project>{685cf889-b865-479e-9c80-0b2ff806b3a6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\txMathlib\txMathlib.vcxproj">
+      <Project>{e69aefef-8e98-46b8-b4e4-246413ceda9c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\txShapelib\txShapelib.vcxproj">
       <Project>{c8a5725a-cfcf-40ed-83dd-9df3014908c3}</Project>

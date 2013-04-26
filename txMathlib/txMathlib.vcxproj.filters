@@ -27,6 +27,12 @@
     <ClInclude Include="txMathConstant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="txFourPeakSurface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="importexport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="txMathConstant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="txFourPeakSurface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

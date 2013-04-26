@@ -46,6 +46,8 @@
 		void InitializeFromOFF(char *filename);
 
 		void InitializeFromOFFSurface(txTriSurfaceData *surf);
+		// for debug didn't construct mesh
+		void InitializeFromOFFSurfaceWitoutMesh(txTriSurfaceData *surf);
 
 	public:
 		Point  * Verts()	{ return verts; }
@@ -102,8 +104,8 @@
 
 	void RenderSurface(SurfaceImporter *surface, bool addWireframe=true);
 
-	static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *verts_, udword nbTri_, udword *indices_);
+	static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *verts_, udword nbTri_, udword *indices_, Point *ecolor);
 
-	void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *indices_);
+	void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *indices_, Point *color);
 
 #endif

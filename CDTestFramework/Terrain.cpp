@@ -5,6 +5,7 @@
 
 #include "../graphstructure/txMesh.h"
 #include "../graphstructure/lib/mesh.h"
+#include "../txShapelib/txTriSurfaceData.h"
 
 #define BufferSize  25
 
@@ -635,6 +636,34 @@ void SurfaceImporter::InitializeFromOFFSurface(txTriSurfaceData *surf) {
 	BuildVertexNormals();
 }
 
+
+
+void SurfaceImporter::InitializeFromOFFSurfaceWitoutMesh(txTriSurfaceData *surf)
+{
+	nbVerts = surf->GetVerts().size();
+	nbFaces = surf->GetIndexes().size()/3;
+
+	verts = new Point[nbVerts];
+	faces = new udword[nbFaces*3];
+	
+	for (size_t i=0; i<nbVerts; i++) {
+		verts[i].x = (float) surf->GetVerts()[i].x;
+		verts[i].y = (float) surf->GetVerts()[i].y;
+		verts[i].z = (float) surf->GetVerts()[i].z;
+	}
+
+	// this operation is safe the index in surf must >0
+	//memcpy(faces,&(surf->GetIndexes()[0]),surf->GetIndexes().size());
+	for (size_t i=0; i<surf->GetIndexes().size(); i++) {
+		faces[i] = surf->GetIndexes()[i];
+	}
+
+
+	InitializeOFFColors();
+	BuildVertexNormals();
+
+}
+
 void SurfaceImporter::InitializeMeshVertices()
 {
 	verts = new Point[nbVerts];
@@ -742,9 +771,9 @@ void SRenderSurace()
 	RenderSurface(gSurface,true);
 }
 
-void RenderCollidePatch(udword nbTri_, udword *indices_)
+void RenderCollidePatch(udword nbTri_, udword *indices_, Point *color)
 {
-	RenderSurfaceTriangles(gSurface, nbTri_, indices_);
+	RenderSurfaceTriangles(gSurface, nbTri_, indices_, color);
 }
 
 
@@ -845,7 +874,7 @@ void RenderSurface(SurfaceImporter *surface, bool addWireframe)
 }
 
 
-static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *verts_, udword nbTri_, udword *indices_)
+static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *verts_, udword nbTri_, udword *indices_, Point *ecolor)
 {
 	int nbTriangles = nbTri_;
 	udword * indices = indices_;
@@ -879,7 +908,7 @@ static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *vert
 	glVertexPointer(3,GL_FLOAT, 0, pVertList);
     glEnableClientState(GL_NORMAL_ARRAY);
 	glNormalPointer(GL_FLOAT, 0, pNormList);
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	glColor4f(ecolor->x, ecolor->y, ecolor->z, 1.0f);
 	glDrawArrays(GL_TRIANGLES, 0, nbTriangles*3);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
@@ -889,9 +918,9 @@ static void _RenderSurfaceTriangles(udword *faces_, Point *normals_, Point *vert
 }
 
 
-void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *indices_)
+void RenderSurfaceTriangles(SurfaceImporter *surface, udword nbTri_, udword *indices_, Point *ecolor)
 {
-	_RenderSurfaceTriangles(surface->Faces(), surface->Normals(), surface->Verts(), nbTri_, indices_);
+	_RenderSurfaceTriangles(surface->Faces(), surface->Normals(), surface->Verts(), nbTri_, indices_, ecolor);
 }
 
 

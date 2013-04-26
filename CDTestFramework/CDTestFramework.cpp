@@ -13,6 +13,7 @@
 #include "PlaneMeshQuery.h"
 #include "MeshMeshQuery.h"
 #include "SphsereMeshPlaneMeshQuery.h"
+#include "txFourPeakSurfacePlaneQuery.h"
 
 #define WINDOW_WIDTH	1024
 #define WINDOW_HEIGHT	768
@@ -32,6 +33,7 @@ enum TestIndex
 	TEST_PLANE_MESH_QUERY,
 	TEST_MESH_MESH_QUERY,
 	TEST_SPHEREMESH_PLANEMESH_QUERY,
+	TEST_FOURPEAKSURFACE_PLANE_QUERY,
 
 	MAX_NB_TESTS
 };
@@ -260,6 +262,7 @@ int main(int argc, char** argv)
 			{TEST_PLANE_MESH_QUERY, "Planes-Mesh query"},
 			{TEST_MESH_MESH_QUERY, "Mesh-Mesh query"},
 			{TEST_SPHEREMESH_PLANEMESH_QUERY, "SphereMesh-PlaneMesh"},
+			{TEST_FOURPEAKSURFACE_PLANE_QUERY, "FourPeakSurface-Plane"},
 		};
 		TwType testType = TwDefineEnum("CollisionTest", testEV, MAX_NB_TESTS);
 		TwAddVarRW(gMainBar, "CollisionTests", testType, &gSelectedTest, "");
@@ -275,6 +278,7 @@ int main(int argc, char** argv)
 	gCollisionTests[5]  = new PlaneMeshQuery;
 	gCollisionTests[6]  = new MeshMeshQuery;
 	gCollisionTests[7]  = new SphsereMeshPlaneMeshQuery;
+	gCollisionTests[8] = new txFourPeakSurfacePlaneQuery;
 	for(int i=0;i<MAX_NB_TESTS;i++)
 		gCollisionTests[i]->Init();
 	gCollisionTests[gTest]->Select();

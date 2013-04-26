@@ -120,7 +120,8 @@ void MeshMeshQuery::PerformTest()
 			}
 
 			//RenderTerrainTriangles(collider.GetNbPairs(), indexes2);
-			RenderSurfaceTriangles(GetSurface(),collider.GetNbPairs(),indexes2);
+			Point color(1.0,0.0,0.0);
+			RenderSurfaceTriangles(GetSurface(),collider.GetNbPairs(),indexes2,&color);
 			delete [] indexes;
 			indexes = NULL;
 			delete [] indexes2;

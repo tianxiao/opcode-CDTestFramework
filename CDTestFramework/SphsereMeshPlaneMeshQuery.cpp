@@ -35,7 +35,7 @@ void SphsereMeshPlaneMeshQuery::Init()
 
 	// Initialize from subdivision surface.
 	// construct subvision
-	txTessellateSphere(1.0,2,1,surf);
+	txTessellateSphere(1.0,3,1,surf);
 	surface->InitializeFromOFFSurface(surf);
 	mesh = surface->GetMesh();
 
@@ -49,7 +49,7 @@ void SphsereMeshPlaneMeshQuery::Init()
 	surface2 = new SurfaceImporter();
 	assert(surface2);
 
-	txFrustum frustum(1.0, 1.0, 0.2);
+	txFrustum frustum(10.0, 10.0, 1.0);
 	txFrustumSubdivision subfrustum(&frustum,30);
 	subfrustum.Subdivision();
 	surf2 = new txTriSurfaceData(*subfrustum.GetTriSurfData());
@@ -90,7 +90,7 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 
 	/**
 	* The folowing code is a test:
-	* You cannot do this in stl event you allocate the memeory first.
+	* You cannot do this in stl even you allocate the memeory first.
 	*/
 	//std::vector<int> intlist;
 	//intlist.reserve(3);
@@ -99,9 +99,9 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 	//intlist[0] = 3;
 
 	// Draw the Tri-Mesh
-	//drawer->Draw(true);
+	drawer->Draw(true);
 	drawer2->Draw(true);
-	RenderTerrain();
+	//RenderTerrain();
 
 	const Model *TM2 = GetTerrainModel();
 	const Model *spheremodel = modelbuilder->GetModel();
@@ -114,22 +114,25 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 	Opcode::BVTCache cache;
 	cache.Model0 = spheremodel;
 	//cache.Model1 = TM2;
-	cache.Model1 = TM2;
+	cache.Model1 = modelbuilder2->GetModel();
 
 	Matrix4x4 matplane;
-	matplane.Set(
-		1.0,0.0,0.0,0.0,
-		0.0,0.0,-1.0,0.0,
-		0.0,1.0,0.0,0.0,
-		0.0,0.0,0.0,1.0
-		);
+	// vertical
+	//matplane.Set(
+	//	1.0,0.0,0.0,0.0,
+	//	0.0,0.0,-1.0,0.0,
+	//	0.0,1.0,0.0,0.0,
+	//	0.0,0.0,0.0,1.0
+	//	);
+
+	matplane.Identity();
 
 
 	assert(collider.ValidateSettings()==0);
 
 	//Pair cdpair;
 
-	if (collider.Collide(cache,&matplane,null))
+	if (collider.Collide(cache,null,&matplane))
 	{
 		if (collider.GetContactStatus())
 		{
@@ -148,8 +151,9 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 			}
 
 			// RenderTerrainTriangles(collider.GetNbPairs(), indexes2);
-			// RenderSurfaceTriangles(surface,collider.GetNbPairs(),indexes2);
-			RenderSurfaceTriangles(surface,collider.GetNbPairs(),indexes);
+			Point color(1.0,0.0,0.0);
+			RenderSurfaceTriangles(surface2,collider.GetNbPairs(),indexes2, &color);
+			RenderSurfaceTriangles(surface,collider.GetNbPairs(),indexes, &color);
 
 			if (pfappset==WITHPATCHFINDER) 
 			{
@@ -159,7 +163,8 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 				patchdetector.DetectPath();
 				size_t *patchindices = patchdetector.PatchIndeces1();
 				// Rnder the patch face patch
-				//RenderSurfaceTriangles(surface, patchdetector.PatchCount1(), patchindices);
+				Point color(1.0,0.0,0.0);
+				RenderSurfaceTriangles(surface, patchdetector.PatchCount1(), patchindices, &color);
 
 			} else {
 			

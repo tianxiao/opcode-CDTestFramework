@@ -87,6 +87,7 @@
     <ClInclude Include="txFrustumSubdivision.h" />
     <ClInclude Include="txshapes.h" />
     <ClInclude Include="txSubdivisionTopo.h" />
+    <ClInclude Include="txTesselateFunctionSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -109,6 +110,7 @@
     <ClCompile Include="txQuaterTriCfg.cpp" />
     <ClCompile Include="txshapes.cpp" />
     <ClCompile Include="txSubdivisionTopo.cpp" />
+    <ClCompile Include="txTesselateFunctionSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\txGeometrylib\txGeometrylib.vcxproj">

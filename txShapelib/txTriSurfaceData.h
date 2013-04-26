@@ -13,6 +13,7 @@ class TXSHAPE_API txTriSurfaceData
 public:
 	txTriSurfaceData(void);
 	txTriSurfaceData(txVector3 *v,int numv, int *i,int numi);
+	txTriSurfaceData(txTriSurfaceData *md);
 	~txTriSurfaceData(void);
 
 	std::vector<txVector3> & GetVerts() { return verts; };
@@ -21,6 +22,10 @@ public:
 	// Efficiency consideration & also avoid the cross memory allocation!
 	void AllocateVerts(size_t size) { verts.reserve(size); };
 	void AllocateIndexes(size_t size) { indexes.reserve(size); };
+
+	txTriSurfaceData *DeepCopy() { return new txTriSurfaceData(this); };
+
+	void DumpFile(char *filename);
 
 private:
 	std::vector<txVector3> verts;
