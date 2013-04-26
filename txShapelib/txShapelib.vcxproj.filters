@@ -44,10 +44,10 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="txTriSurfaceData.cpp">
+    <ClCompile Include="txFrustum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="txFrustum.cpp">
+    <ClCompile Include="txTriSurfaceData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
