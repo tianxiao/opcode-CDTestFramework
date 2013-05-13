@@ -8,10 +8,10 @@ public:
 	TXSurfaceDrawer(SurfaceImporter *surface);
 	~TXSurfaceDrawer(void);
 
-	void Draw(bool addWireframe);
+	void Draw(bool addWireframe, bool defulatt=true);
 
 private:
-	void _RenderSurfaceUtil(bool addWireframe);
+	void _RenderSurfaceUtil(bool addWireframe, bool defaultt=true);
 	void _BuildRenderData();
 private:
 	SurfaceImporter *surface;

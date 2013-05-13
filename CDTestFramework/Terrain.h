@@ -49,6 +49,14 @@
 		// for debug didn't construct mesh
 		void InitializeFromOFFSurfaceWitoutMesh(txTriSurfaceData *surf);
 
+		//--------------------------------------------------------------
+		// Begin debug translate rotation
+		void InitializeFromOFFSurface(txTriSurfaceData *surf, double r[3], double a[3][3]);
+
+	private:
+		void TranslateMesh(Point &t);
+		// End debug translate rotation
+
 	public:
 		Point  * Verts()	{ return verts; }
 		Point  * Colors()	{ return colors; }

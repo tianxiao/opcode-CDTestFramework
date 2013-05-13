@@ -636,6 +636,38 @@ void SurfaceImporter::InitializeFromOFFSurface(txTriSurfaceData *surf) {
 	BuildVertexNormals();
 }
 
+void SurfaceImporter::InitializeFromOFFSurface(txTriSurfaceData *surf, double r[3], double a[3][3])
+{
+	mesh = new txMesh();
+	mesh->ConstructMeshFromOFFTriSurface(surf);
+
+	nbVerts = mesh->VertexCount();
+	nbFaces = mesh->FaceCount();
+
+	InitializeMeshVertices();
+	// After the Mesh Vertices have been assigned we do
+	// The translation and the rotation
+	// WARNING!!! Here the data points didn't consistents with the points 
+	// in the txMesh. but the connectivity is the same!
+	Point translate(r[0],r[1],r[2]);
+	TranslateMesh(translate);
+
+
+	InitializeMeshFaces();
+
+	InitializeOFFColors();
+	BuildVertexNormals();
+}
+
+void SurfaceImporter::TranslateMesh(Point &t)
+{
+	assert(nbVerts==mesh->GetVertexList().size());
+	for (size_t i=0; i<nbVerts; i++)
+	{
+		verts[i].Set(verts[i].x+t.x, verts[i].y+t.y, verts[i].z+t.z);
+	}
+}
+
 
 
 void SurfaceImporter::InitializeFromOFFSurfaceWitoutMesh(txTriSurfaceData *surf)

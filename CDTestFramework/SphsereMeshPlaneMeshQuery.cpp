@@ -36,7 +36,8 @@ void SphsereMeshPlaneMeshQuery::Init()
 	// Initialize from subdivision surface.
 	// construct subvision
 	txTessellateSphere(1.0,3,1,surf);
-	surface->InitializeFromOFFSurface(surf);
+	double r[3] = {0.0,0.0,-0.7};
+	surface->InitializeFromOFFSurface(surf,r,NULL);
 	mesh = surface->GetMesh();
 
 	drawer = new TXSurfaceDrawer(surface);
@@ -49,7 +50,7 @@ void SphsereMeshPlaneMeshQuery::Init()
 	surface2 = new SurfaceImporter();
 	assert(surface2);
 
-	txFrustum frustum(10.0, 10.0, 1.0);
+	txFrustum frustum(5.0, 5.0, 1.0);
 	txFrustumSubdivision subfrustum(&frustum,30);
 	subfrustum.Subdivision();
 	surf2 = new txTriSurfaceData(*subfrustum.GetTriSurfData());
@@ -99,8 +100,8 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 	//intlist[0] = 3;
 
 	// Draw the Tri-Mesh
-	drawer->Draw(true);
-	drawer2->Draw(true);
+	drawer->Draw(true,false);
+	drawer2->Draw(true,false);
 	//RenderTerrain();
 
 	const Model *TM2 = GetTerrainModel();
@@ -152,7 +153,7 @@ void SphsereMeshPlaneMeshQuery::PerformTest()
 
 			// RenderTerrainTriangles(collider.GetNbPairs(), indexes2);
 			Point color(1.0,0.0,0.0);
-			RenderSurfaceTriangles(surface2,collider.GetNbPairs(),indexes2, &color);
+			//RenderSurfaceTriangles(surface2,collider.GetNbPairs(),indexes2, &color);
 			RenderSurfaceTriangles(surface,collider.GetNbPairs(),indexes, &color);
 
 			if (pfappset==WITHPATCHFINDER) 

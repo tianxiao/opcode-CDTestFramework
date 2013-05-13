@@ -22,9 +22,9 @@ TXSurfaceDrawer::~TXSurfaceDrawer(void)
 }
 
 
-void TXSurfaceDrawer::Draw(bool addWireframe)
+void TXSurfaceDrawer::Draw(bool addWireframe,bool defaultt)
 {
-	_RenderSurfaceUtil(addWireframe );
+	_RenderSurfaceUtil(addWireframe, defaultt);
 }
 
 void TXSurfaceDrawer::_BuildRenderData()
@@ -63,15 +63,23 @@ void TXSurfaceDrawer::_BuildRenderData()
 }
 
 
-void TXSurfaceDrawer::_RenderSurfaceUtil(bool addWireframe)
+void TXSurfaceDrawer::_RenderSurfaceUtil(bool addWireframe, bool defaultt)
 {
-    glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3,GL_FLOAT, 0, pVertList);
-    glEnableClientState(GL_NORMAL_ARRAY);
-	glNormalPointer(GL_FLOAT, 0, pNormList);
-    glColorPointer(4,GL_FLOAT, 0, pColorList);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glDrawArrays(GL_TRIANGLES, 0, nbFaces_*3);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	if (defaultt) {
+		
+		glVertexPointer(3,GL_FLOAT, 0, pVertList);
+		
+		glNormalPointer(GL_FLOAT, 0, pNormList);
+		glColorPointer(4,GL_FLOAT, 0, pColorList);
+		
+		glDrawArrays(GL_TRIANGLES, 0, nbFaces_*3);
+	}
+
+
 
 	if(addWireframe)
 	{
