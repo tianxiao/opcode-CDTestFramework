@@ -33,6 +33,9 @@
     <ClInclude Include="importexport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="txLineSegmentTriangleIntersection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="txFourPeakSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="txLineSegmentTriangleIntersection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
