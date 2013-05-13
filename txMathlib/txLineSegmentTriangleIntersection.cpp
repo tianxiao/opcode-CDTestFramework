@@ -35,6 +35,21 @@
 	to[1] = from[1]; \
 	to[2] = from[2];
 
+#define txSWAPVEC(v1, v2) \
+	{ \
+		double temp[3];\
+		txCOPYVEC(temp,v1);\
+		txCOPYVEC(v1,v2);\
+		txCOPYVEC(v2,temp);\
+	}
+
+#define txSWAPSCALAR(a,b) \
+	{\
+		double temp = a;\
+		a = b;\
+		b = temp;\
+	}
+
 
 #define txBARYCENTRICVEC(V,v0,v1,v2,u,v) \
 	for (int i=0; i<3; i++) { \
@@ -257,85 +272,50 @@ void TXMATH_API TriangleTriangleIntersectionM2(
 	assert(i00+i01+i02+i10+i11+i12==4);
 
 	double tp00[3], tp01[3], tp10[3], tp11[3];
-	double la00, la01, la10, la11;
-
-	double vv[3];
 
 	if (!i00) {
-		la00 = txDOT(p01,l);
-		if ( txDOT(p01,l)>txDOT(p02,l) ) {
 			txCOPYVEC(tp00,p01);
 			txCOPYVEC(tp01,p02);
-		} else {
-			txCOPYVEC(tp01,p01);
-			txCOPYVEC(tp00,p02);
-		}
-
 	} else if (!i01) {
-
-		if (txDOT(p00,l)>txDOT(p02,l)) {
 			txCOPYVEC(tp00,p00);
 			txCOPYVEC(tp01,p02);
-		} else {
-			txCOPYVEC(tp01,p00);
-			txCOPYVEC(tp00,p02);			
-		}
-
 	} else if (!i02) {
-		txSUB(vv,p00,p01);
-		if (vv[0]>0.0 || vv[1]>0.0 || vv[2]>0.0) {
 			txCOPYVEC(tp00,p00);
 			txCOPYVEC(tp01,p01);			
-		} else {
-			txCOPYVEC(tp01,p00);
-			txCOPYVEC(tp00,p01);
-		}
-
 	}
 
 	if (!i10) {
-		txSUB(vv,p11,p12);
-		if (vv[0]>0.0 || vv[1]>0.0 || vv[2]>0.0) {
 			txCOPYVEC(tp10,p11);
 			txCOPYVEC(tp11,p12);			
-		} else {
-			txCOPYVEC(tp11,p11);
-			txCOPYVEC(tp10,p12);
-		}
-
 	} else if(!i11) {
-		txSUB(vv,p12,p10);
-		if (vv[0]>0.0 || vv[1]>0.0 || vv[2]>0.0) {
 			txCOPYVEC(tp10,p12);
 			txCOPYVEC(tp11,p10);
-		} else {
-			txCOPYVEC(tp11,p12);
-			txCOPYVEC(tp10,p10);			
-		}
 
 	} else if(!i12) {
-		txSUB(vv,p10,p11);
-		if (vv[0]>0.0 || vv[1]>0.0 || vv[2]>0.0) {
 			txCOPYVEC(tp10,p10);
 			txCOPYVEC(tp11,p11);			
-		} else {
-			txCOPYVEC(tp11,p10);
-			txCOPYVEC(tp10,p11);
-		}
-
 	}
 
-	double vv0[3], vv1[3];
-	txSUB(vv0,tp10,tp01);
-	txSUB(vv1,tp00,tp11);
-	if (CheckVVLargeThanZero(vv0) || CheckVVLargeThanZero(vv1)) {
-		assert(false);
+	double la00, la01, la10, la11;
+	la00 = txDOT(l,tp00);
+	la01 = txDOT(l,tp01);
+	la10 = txDOT(l,tp10);
+	la11 = txDOT(l,tp11);
+
+	if (la00>la01) {
+		txSWAPVEC(tp00,tp01);
+		txSWAPSCALAR(la00,la01);
+	}
+	if (la10>la11) {
+		txSWAPVEC(tp10,tp11);
+		txSWAPSCALAR(la10,la11);
 	}
 
-	txSUB(vv,tp00,tp10);
-	if ( CheckVVLargeThanZero(vv) ) {
-		txSUB(vv,tp11,tp01);
-		if ( CheckVVLargeThanZero(vv) ) {
+	if ( la00>la10 ) {
+		// assert means the input triangle pair must be intesected!!!
+		assert( la01<la10 );
+
+		if ( la11>la01 ) {
 			txCOPYVEC(s,tp10);
 			txCOPYVEC(e,tp01);
 		} else {
@@ -343,8 +323,10 @@ void TXMATH_API TriangleTriangleIntersectionM2(
 			txCOPYVEC(e,tp11);
 		}
 	} else {
-		txSUB(vv,tp11,tp01);
-		if ( CheckVVLargeThanZero(vv)) {
+		// assert means the input triangle pair must be intesected!!!
+		assert( la00<la11 );
+
+		if ( la11>la01 ) {
 			txCOPYVEC(s,tp00);
 			txCOPYVEC(e,tp01);
 		} else {
