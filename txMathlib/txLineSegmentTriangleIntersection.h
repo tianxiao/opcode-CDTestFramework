@@ -21,8 +21,9 @@ void TXMATH_API TriangleTriangleIntersection(
 	double s[3], double e[3]);
 
 /**
-* Second version that use the line plane intersection then compare thouse 
-* four intersection point by projecting to the same axis
+* Second version that use the line plane intersection then compare thoese 
+* four intersection points by projecting to the same axis the two triangles
+* determined plane intersection direction L
 */
 void TXMATH_API TriangleTriangleIntersectionM2(
 	double vert00[3], double vert01[3], double vert02[3],

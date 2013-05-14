@@ -184,7 +184,7 @@ int TXMATH_API SegmentPlaneIntersection(
 	double det, inv_det;
 
 	double dir[3];
-	txSUB(dir, orig, dest);
+	txSUB(dir, dest, orig);
 	double l = sqrt(txDOT(dir,dir));
 
 	txVecDiv(dir,l);
@@ -211,10 +211,13 @@ int TXMATH_API SegmentPlaneIntersection(
 	txSUB(tvec, orig, vert0);
 
 	*u = txDOT(tvec, pvec)*inv_det;
+	//if (*u<0.0 || *u>1.0) return 0;
 
 	txCROSS(qvec, tvec, edge1);
 
+
 	*v = txDOT(dir, qvec)*inv_det;
+	//if (*v<0.0 || *u+*v>1.0) return 0;
 
 	t = txDOT(edge2, qvec)*inv_det;
 
@@ -316,10 +319,10 @@ void TXMATH_API TriangleTriangleIntersectionM2(
 		assert( la01<la10 );
 
 		if ( la11>la01 ) {
-			txCOPYVEC(s,tp10);
+			txCOPYVEC(s,tp00);
 			txCOPYVEC(e,tp01);
 		} else {
-			txCOPYVEC(s,tp10);
+			txCOPYVEC(s,tp00);
 			txCOPYVEC(e,tp11);
 		}
 	} else {
@@ -327,10 +330,10 @@ void TXMATH_API TriangleTriangleIntersectionM2(
 		assert( la00<la11 );
 
 		if ( la11>la01 ) {
-			txCOPYVEC(s,tp00);
+			txCOPYVEC(s,tp10);
 			txCOPYVEC(e,tp01);
 		} else {
-			txCOPYVEC(s,tp00);
+			txCOPYVEC(s,tp10);
 			txCOPYVEC(e,tp11);
 		}
 		
