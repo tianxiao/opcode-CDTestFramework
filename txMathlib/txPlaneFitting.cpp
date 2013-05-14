@@ -8,6 +8,8 @@ using namespace std;
 using namespace Eigen;
 
 /**
+* Algorithm based on the Matlab code:
+* http://stackoverflow.com/questions/10900141/fast-plane-fitting-to-many-points
 * SVD Description from wiki
 * http://en.wikipedia.org/wiki/Singular_value_decomposition
 * I use the Eigen's SVD 
