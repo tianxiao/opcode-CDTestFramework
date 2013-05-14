@@ -86,6 +86,7 @@
     </ClCompile>
     <ClCompile Include="TriangleTriangleIntersection_unittest.cpp" />
     <ClCompile Include="txMathlib_unittest.cpp" />
+    <ClCompile Include="txPlaneFitting_unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gtest-1.6.0\msvc\gtest.vcxproj">

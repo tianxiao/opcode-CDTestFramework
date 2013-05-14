@@ -124,7 +124,6 @@ TEST(INTERSECTIONTEST, TriangleTriangleIntersectionM20){
 
 }
 
-
 TEST(INTERSECTIONTEST, TriangleTriangleIntersectionM21){
 	// one of each triangle edge intersect
 	double v00[] = {0,1,0};
@@ -159,7 +158,7 @@ TEST(INTERSECTIONTEST, TriangleTriangleIntersectionM21){
 TEST(INTERSECTIONTEST, TriangleTriangleIntersectionM22){
 	// 0 triangle's two edge intersect the 1 triangle
 	double v00[] = {0,1,0};
-	double v01[] = {1,0,-1.0};
+	double v01[] = {1,0,-1};
 	double v02[] = {1,0,3};
 
 	double v10[] = {0,0,0};
